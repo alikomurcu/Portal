@@ -2,19 +2,35 @@
 
 void init() 
 {
-	//ParseObj("armadillo.obj");
-	//ParseObj("bunny.obj");
+    shaders.push_back(Shader("shaders/vert.glsl", "shaders/frag.glsl"));
+    models.push_back(Model("assets/armadillo.obj"));
+    models.push_back(Model("assets/bunny.obj"));
 
     glEnable(GL_DEPTH_TEST);
-    //initShaders();
-    //initVBO();
 }
 
-void mainLoop(GLFWwindow* window)
+void render(GLFWwindow* window)
 {
     while (!glfwWindowShouldClose(window))
     {
-        //display();
+        glClearColor(0, 0, 0, 1);
+        glClearDepth(1.0f);
+        glClearStencil(0);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+        // Temporarily here
+        modelingMatrix = glm::translate(glm::mat4(1.0), glm::vec3(0.0f, 5.0f, 0.0f));
+        viewingMatrix = glm::lookAt(eyePos, eyeDir, eyeUp);
+
+        // Example use
+        shaders[0].set();
+        models[0].draw();
+
+        modelingMatrix = glm::translate(glm::mat4(1.0), glm::vec3(0.0f, 5.0f, 2.0f));
+
+        shaders[0].set();
+        models[1].draw();
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -63,7 +79,7 @@ int main(int argc, char** argv)   // Create Main Function For Bringing It All To
     glfwSetWindowSizeCallback(window, reshape);
 
     reshape(window, width, height); // need to call this once ourselves
-    mainLoop(window); // this does not return unless the window is closed
+    render(window);
 
     glfwDestroyWindow(window);
     glfwTerminate();

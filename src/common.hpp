@@ -7,6 +7,7 @@
 #include <cstring>
 #include <fstream>
 #include <vector>
+#include <sstream>
 
 // OpenGL related libraries
 #include <GL/glew.h>
@@ -17,6 +18,10 @@
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
 
+// Macros
+#define BUFFER_OFFSET(i) ((char*)NULL + (i))
+
+// Global variables
 inline int gWidth, gHeight;
 
 inline glm::mat4 projectionMatrix;
@@ -24,5 +29,10 @@ inline glm::mat4 viewingMatrix;
 inline glm::mat4 modelingMatrix;
 
 inline std::vector<GLuint> programs;
+
+// Camera in the origin, looking to +y and +z is up.
+inline glm::vec3 eyePos(0., 0., 0.);
+inline glm::vec3 eyeDir(0., 1., 0.);
+inline glm::vec3 eyeUp(0., 0., 1.);
 
 #endif // COMMON_HPP

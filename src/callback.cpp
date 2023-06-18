@@ -12,7 +12,7 @@ void reshape(GLFWwindow* window, int w, int h)
 
 	float fovyRad = (float) (45.0 / 180.0) * M_PI;
 
-	projectionMatrix = glm::perspective(fovyRad, 1.0f, 1.0f, 100.0f);
+    projectionMatrix = glm::perspective(fovyRad, gWidth/(float) gHeight, 0.1f, 100.0f);
 	viewingMatrix = glm::mat4(1);
 }
 

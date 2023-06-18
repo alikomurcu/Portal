@@ -1,8 +1,8 @@
 #include "shader.hpp"
 
-bool ReadDataFromFile(
-    const std::string& fileName, ///< [in]  Name of the shader file
-    std::string&       data)     ///< [out] The contents of the file
+/* Private Methods */
+
+bool Shader::ReadDataFromFile (const std::string& fileName, std::string& data)
 {
     std::fstream myfile;
 
@@ -32,7 +32,7 @@ bool ReadDataFromFile(
     return true;
 }
 
-GLuint createVS(const char* shaderName)
+GLuint Shader::createVS (const std::string& shaderName)
 {
     std::string shaderSource;
 
@@ -57,7 +57,7 @@ GLuint createVS(const char* shaderName)
 	return vs;
 }
 
-GLuint createFS(const char* shaderName)
+GLuint Shader::createFS (const std::string& shaderName)
 {
     std::string shaderSource;
 
@@ -82,16 +82,41 @@ GLuint createFS(const char* shaderName)
 	return fs;
 }
 
-class Shader {
-    private:
-            uint programIndex;
+/* Public Methods */
 
-    public:
-        Shader ()
-        {
-            
-            programs.push_back(glCreateProgram());
+Shader::Shader (const std::string& vertShaderName, const std::string& fragShaderName)
+{
+    program = glCreateProgram();
 
+    GLuint vs = createVS(vertShaderName);
+    GLuint fs = createFS(fragShaderName);
 
-        }
-};
+    glAttachShader(program, vs);
+    glAttachShader(program, fs);
+
+    GLint status;
+    glLinkProgram(program);
+    glGetProgramiv(program, GL_LINK_STATUS, &status);
+
+    if (status != GL_TRUE)
+    {
+        std::cout << "Program link failed" << std::endl;
+        exit(-1);
+    }
+
+    modelingMatrixLoc = glGetUniformLocation(program, "modelingMatrix");
+    viewingMatrixLoc = glGetUniformLocation(program, "viewingMatrix");
+    projectionMatrixLoc = glGetUniformLocation(program, "projectionMatrix");
+    eyePosLoc = glGetUniformLocation(program, "eyePos");
+}
+
+void Shader::set (void)
+{
+    glUseProgram(program);
+
+    glUniformMatrix4fv(projectionMatrixLoc, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
+	glUniformMatrix4fv(viewingMatrixLoc, 1, GL_FALSE, glm::value_ptr(viewingMatrix));
+	glUniformMatrix4fv(modelingMatrixLoc, 1, GL_FALSE, glm::value_ptr(modelingMatrix));
+
+    glUniform3fv(eyePosLoc, 1, glm::value_ptr(eyePos));
+}
