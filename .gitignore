@@ -5,7 +5,7 @@
 *.slo
 *.lo
 *.o
-*.obj
+#*.obj
 
 # Precompiled Headers
 *.gch
@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+# VSCode related
+.vscode
+
+# Makefile created directories
+bin
+obj
+
+# OpenGL created directories
+logs
