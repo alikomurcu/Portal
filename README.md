@@ -1,9 +1,9 @@
 # Portal
 CENG469 Final Project
 
-To build & run:
-    make
+To build & run:\
+    make\
     ./bin/portal
 
-To clean:
+To clean:\
     make clean
