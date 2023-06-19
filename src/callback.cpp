@@ -1,5 +1,6 @@
 #include "callback.hpp"
 
+
 void reshape(GLFWwindow* window, int w, int h)
 {
     w = w < 1 ? 1 : w;
@@ -18,7 +19,16 @@ void reshape(GLFWwindow* window, int w, int h)
 
 void keyboard(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if (key == GLFW_KEY_Q && action == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)       // TODO: speedup logic
+    {
+        mainCamera->transform->Position += mainCamera->transform->Front * 0.1f;
+    }
+    else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    {
+        mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
+    }
+
+    else if (key == GLFW_KEY_Q && action == GLFW_PRESS)
     {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
@@ -36,4 +46,33 @@ void keyboard(GLFWwindow* window, int key, int scancode, int action, int mods)
     {
         //glShadeModel(GL_FLAT);
     }
+    else if (key == GLFW_KEY_L && action == GLFW_PRESS)
+    {
+        if (toggleCursor)
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        else glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        toggleCursor = !toggleCursor;
+    }
+
+
+}
+
+void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
+{
+    auto xpos = static_cast<float>(xposIn);
+    auto ypos = static_cast<float>(yposIn);
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+    lastX = xpos;
+    lastY = ypos;
+
+    mainCamera->ProcessMouseMovement(xoffset, yoffset);
 }
