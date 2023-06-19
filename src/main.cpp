@@ -3,8 +3,14 @@
 void init() 
 {
     shaders.push_back(Shader("shaders/vert.glsl", "shaders/frag.glsl"));
-    models.push_back(Model("assets/armadillo.obj"));
-    models.push_back(Model("assets/bunny.obj"));
+    shaders.push_back(Shader("shaders/ground_vert.glsl", "shaders/ground_frag.glsl"));
+
+    models.push_back(Model("assets/left_gate.obj"));
+    models.push_back(Model("assets/right_gate.obj"));
+    models.push_back(Model("assets/box.obj"));
+    models.push_back(Model("assets/ground.obj"));
+
+    models[3].attach_texture("assets/textures/ground.jpg");
 
     glEnable(GL_DEPTH_TEST);
 }
@@ -19,17 +25,18 @@ void render(GLFWwindow* window)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         // Temporarily here
-        modelingMatrix = glm::translate(glm::mat4(1.0), glm::vec3(0.0f, 5.0f, 0.0f));
+        modelingMatrix = glm::mat4(1);
         viewingMatrix = glm::lookAt(eyePos, eyeDir, eyeUp);
 
         // Example use
         shaders[0].set();
         models[0].draw();
-
-        modelingMatrix = glm::translate(glm::mat4(1.0), glm::vec3(0.0f, 5.0f, 2.0f));
-
-        shaders[0].set();
         models[1].draw();
+        models[2].draw();
+
+        modelingMatrix = glm::scale(glm::mat4(1), glm::vec3(10, 10, 10));
+        shaders[1].set(models[3].texture_num);
+        models[3].draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();

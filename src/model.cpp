@@ -57,9 +57,9 @@ bool Model::ParseObj(const std::string& fileName)
 					str >> vIndex[2]; str >> c >> c; // consume "//"
 					str >> nIndex[2];
 
-					assert(vIndex[0] == nIndex[0] &&
-						vIndex[1] == nIndex[1] &&
-						vIndex[2] == nIndex[2]); // a limitation for now
+					//assert(vIndex[0] == nIndex[0] &&
+					//	vIndex[1] == nIndex[1] &&
+					//	vIndex[2] == nIndex[2]); // a limitation for now
 
 					// make indices start from 0
 					for (int c = 0; c < 3; ++c)
@@ -91,7 +91,7 @@ bool Model::ParseObj(const std::string& fileName)
 		return false;
 	}
 
-	assert(gVertices.size() == gNormals.size());
+	//assert(gVertices.size() == gNormals.size());
 
 	return true;
 }
@@ -161,6 +161,18 @@ Model::Model (const std::string &fileName)
 		indexData[3 * i] = gFaces[i].vIndex[0];
 		indexData[3 * i + 1] = gFaces[i].vIndex[1];
 		indexData[3 * i + 2] = gFaces[i].vIndex[2];
+
+		normalData[3 * gFaces[i].vIndex[0]] = gNormals[gFaces[i].nIndex[0]].x;
+		normalData[3 * gFaces[i].vIndex[0] + 1] = gNormals[gFaces[i].nIndex[0]].y;
+		normalData[3 * gFaces[i].vIndex[0] + 2] = gNormals[gFaces[i].nIndex[0]].z;
+
+		normalData[3 * gFaces[i].vIndex[1]] = gNormals[gFaces[i].nIndex[1]].x;
+		normalData[3 * gFaces[i].vIndex[1] + 1] = gNormals[gFaces[i].nIndex[1]].y;
+		normalData[3 * gFaces[i].vIndex[1] + 2] = gNormals[gFaces[i].nIndex[1]].z;
+
+		normalData[3 * gFaces[i].vIndex[2]] = gNormals[gFaces[i].nIndex[2]].x;
+		normalData[3 * gFaces[i].vIndex[2] + 1] = gNormals[gFaces[i].nIndex[2]].y;
+		normalData[3 * gFaces[i].vIndex[2] + 2] = gNormals[gFaces[i].nIndex[2]].z;
 	}
 
 
@@ -180,12 +192,40 @@ Model::Model (const std::string &fileName)
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(gVertexDataSizeInBytes));
 
 	faceCount = gFaces.size();
+	texture_num = -1;
 }
 
 void Model::draw (void)
 {
     glBindVertexArray(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
+
+	if (texture_num >= 0)
+	{
+		glActiveTexture(GL_TEXTURE0 + texture_num);
+		glBindTexture(GL_TEXTURE_2D, texture);
+	}
 	
     glDrawElements(GL_TRIANGLES, faceCount * 3, GL_UNSIGNED_INT, 0);
+}
+
+void Model::attach_texture (const std::string &fileName)
+{
+	texture_num = texture_ctr ++;
+	glGenTextures(1, &texture);
+	glActiveTexture(GL_TEXTURE0 + texture_num);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	int width, height, nrChannels;
+	unsigned char *data;
+
+	data = stbi_load(fileName.c_str(), &width, &height, &nrChannels, 0);
+	
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
 }

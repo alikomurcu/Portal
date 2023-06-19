@@ -2,6 +2,7 @@
 #define MODEL_HPP
 
 #include "common.hpp"
+#include "stb_image.h"
 
 struct Vertex
 {
@@ -45,16 +46,22 @@ class Model
         GLuint indexBuffer;
         GLuint faceCount;
 
+        GLuint texture;
+
         inline static std::vector<Vertex> gVertices;
         inline static std::vector<Texture> gTextures;
         inline static std::vector<Normal> gNormals;
         inline static std::vector<Face> gFaces;
+        inline static int texture_ctr = 0;
 
         bool ParseObj(const std::string& fileName);
 
     public:
+        int texture_num;
+        
         Model (const std::string &fileName);
         void draw (void);
+        void attach_texture (const std::string &fileName);
 };
 
 #endif // MODEL_HPP
