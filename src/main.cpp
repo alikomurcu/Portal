@@ -2,9 +2,14 @@
 
 void init() 
 {
+    mainCamera = new Camera(eyePos, eyeUp);
     shaders.push_back(Shader("shaders/vert.glsl", "shaders/frag.glsl"));
     models.push_back(Model("assets/armadillo.obj"));
     models.push_back(Model("assets/bunny.obj"));
+    skybox = new Skybox();
+    skybox->initShader("shaders/skyboxvs.glsl", "shaders/skyboxfs.glsl");
+    skybox->shader->set();
+    skybox->loadCubemap();
 
     glEnable(GL_DEPTH_TEST);
 }
@@ -20,7 +25,8 @@ void render(GLFWwindow* window)
 
         // Temporarily here
         modelingMatrix = glm::translate(glm::mat4(1.0), glm::vec3(0.0f, 5.0f, 0.0f));
-        viewingMatrix = glm::lookAt(eyePos, eyeDir, eyeUp);
+//        viewingMatrix = glm::lookAt(eyePos, eyeDir, eyeUp);
+        viewingMatrix = mainCamera->GetViewMatrix();
 
         // Example use
         shaders[0].set();
@@ -30,6 +36,11 @@ void render(GLFWwindow* window)
 
         shaders[0].set();
         models[1].draw();
+
+        // draw skybox as last
+        viewingMatrix =  glm::mat4(glm::mat3(viewingMatrix));
+        skybox->shader->set();
+        skybox->draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -77,6 +88,7 @@ int main(int argc, char** argv)   // Create Main Function For Bringing It All To
 
     glfwSetKeyCallback(window, keyboard);
     glfwSetWindowSizeCallback(window, reshape);
+    glfwSetCursorPosCallback(window, mouse_callback);
 
     reshape(window, width, height); // need to call this once ourselves
     render(window);
