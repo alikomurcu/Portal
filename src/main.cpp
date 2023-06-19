@@ -55,6 +55,8 @@ void render(GLFWwindow* window)
         models[5].draw();
 
         // draw skybox as last
+        modelingMatrix = glm::rotate<float>(glm::mat4(1.0), -glm::radians(90.), glm::vec3(1.0, 0.0, 0.0)); // Workarounds to fix skybox
+        modelingMatrix *= glm::rotate<float>(glm::mat4(1.0), -glm::radians(180.), glm::vec3(0.0, 0.0, 1.0));
         viewingMatrix =  glm::mat4(glm::mat3(viewingMatrix));
         skybox->shader->set();
         skybox->draw();

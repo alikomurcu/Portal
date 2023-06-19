@@ -31,7 +31,7 @@ inline glm::mat4 modelingMatrix;
 inline std::vector<GLuint> programs;
 
 // Camera in the origin, looking to +y and +z is up.
-inline glm::vec3 eyePos(0., 0., 0.);
+inline glm::vec3 eyePos(0., -2., 1.);
 inline glm::vec3 eyeDir(0., 1., 0.);
 inline glm::vec3 eyeUp(0., 0., 1.);
 
