@@ -5,13 +5,18 @@ void init()
     mainCamera = new Camera(eyePos, eyeUp);
     shaders.push_back(Shader("shaders/vert.glsl", "shaders/frag.glsl"));
     shaders.push_back(Shader("shaders/ground_vert.glsl", "shaders/ground_frag.glsl"));
+    shaders.push_back(Shader("shaders/wall_vert.glsl", "shaders/wall_frag.glsl"));
 
     models.push_back(Model("assets/left_gate.obj"));
     models.push_back(Model("assets/right_gate.obj"));
     models.push_back(Model("assets/box.obj"));
     models.push_back(Model("assets/ground.obj"));
+    models.push_back(Model("assets/back_wall.obj"));
+    models.push_back(Model("assets/front_wall.obj"));
 
     models[3].attach_texture("assets/textures/ground.jpg");
+    models[4].attach_texture("assets/textures/ground.jpg");
+    models[5].attach_texture("assets/textures/ground.jpg");
 
     skybox = new Skybox();
     skybox->initShader("shaders/skyboxvs.glsl", "shaders/skyboxfs.glsl");
@@ -44,6 +49,10 @@ void render(GLFWwindow* window)
         modelingMatrix = glm::mat4(1);
         shaders[1].set(models[3].texture_num);
         models[3].draw();
+
+        shaders[2].set(models[4].texture_num);
+        models[4].draw();
+        models[5].draw();
 
         // draw skybox as last
         viewingMatrix =  glm::mat4(glm::mat3(viewingMatrix));

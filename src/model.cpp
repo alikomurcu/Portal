@@ -121,7 +121,7 @@ Model::Model (const std::string &fileName)
 	gNormalDataSizeInBytes = gNormals.size() * 3 * sizeof(GLfloat);
 	int indexDataSizeInBytes = gFaces.size() * 3 * sizeof(GLuint);
 	GLfloat* vertexData = new GLfloat[gVertices.size() * 3];
-	GLfloat* normalData = new GLfloat[gNormals.size() * 3];
+	GLfloat* normalData = new GLfloat[gVertices.size() * 3];
 	GLuint* indexData = new GLuint[gFaces.size() * 3];
 
 	float minX = 1e6, maxX = -1e6;
