@@ -31,7 +31,7 @@ void render(GLFWwindow* window)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         // Temporarily here
-        modelingMatrix = glm::translate(glm::mat4(1.0), glm::vec3(0.0f, 5.0f, 0.0f));
+        modelingMatrix = glm::mat4(1);
 //        viewingMatrix = glm::lookAt(eyePos, eyeDir, eyeUp);
         viewingMatrix = mainCamera->GetViewMatrix();
 
@@ -41,7 +41,7 @@ void render(GLFWwindow* window)
         models[1].draw();
         models[2].draw();
 
-        modelingMatrix = glm::scale(glm::mat4(1), glm::vec3(10, 10, 10));
+        modelingMatrix = glm::mat4(1);
         shaders[1].set(models[3].texture_num);
         models[3].draw();
 
