@@ -40,15 +40,20 @@ glm::mat4 Camera::GetViewMatrix()
     transform->Right = glm::normalize(right);
 
     transform->Up    = glm::normalize(glm::cross(transform->Front, transform->Right));
-
+    
     glm::quat qPitch = glm::angleAxis(glm::radians(Pitch), glm::vec3(1, 0, 0));
     glm::quat qYaw = glm::angleAxis(glm::radians(Yaw), glm::vec3(0, 1, 0));
-    glm::quat qRoll = glm::angleAxis(glm::radians(Roll),glm::vec3(0,0,1));
+    // glm::quat qRoll = glm::angleAxis(glm::radians(Roll),glm::vec3(0,0,1));
 
-    //For an FPS camera we can omit roll
-    glm::quat orientation = qRoll * qPitch * qYaw;
+    //For an FPS camera we can omit roll        ROLL IS OMITTED
+    glm::quat orientation = qPitch * qYaw;
     orientation = glm::normalize(orientation);
     glm::mat4 rotate = glm::mat4_cast(orientation);
+    glm::vec4 rowx = rotate[0];
+    glm::vec4 rowy = rotate[1];
+    glm::vec4 rowz = rotate[2];
+    glm::vec4 roww = rotate[3];
+
 
     glm::mat4 translate = glm::mat4(1.0f);
     translate = glm::translate(translate, -transform->Position);
@@ -78,7 +83,13 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset)
     yoffset *= MouseSensitivity;
 
     Yaw   += xoffset;
-    Pitch += yoffset;
+    // restrict pitch to 89 degrees
+    if (Pitch + yoffset > 89.0f)
+        Pitch = 89.0f;
+    else if (Pitch + yoffset < -89.0f)
+        Pitch = -89.0f;
+    else
+        Pitch += yoffset;
 }
 
 // processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
@@ -137,4 +148,11 @@ void Camera::RotateRoll(float rads) // rotate around cams local X axis
     translate = glm::translate(translate, -transform->Position);
 
     viewMatrix = rotate * translate;
+}
+
+void Camera::MoveCamera(bool forward)
+{
+    glm::vec3 projectedDirection = glm::normalize(glm::vec3(transform->Front.x, 0, transform->Front.z));
+    if (forward) transform->Position += projectedDirection * 0.1f;
+    else transform->Position -= projectedDirection * 0.1f;
 }

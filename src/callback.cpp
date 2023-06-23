@@ -21,11 +21,13 @@ void keyboard(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)       // TODO: speedup logic
     {
-        mainCamera->transform->Position += mainCamera->transform->Front * 0.1f;
+        mainCamera->MoveCamera(true);
+        // mainCamera->transform->Position += mainCamera->transform->Front * 0.1f;
     }
     else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
-        mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
+        mainCamera->MoveCamera(false);
+        // mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
     }
 
     else if (key == GLFW_KEY_Q && action == GLFW_PRESS)
@@ -73,6 +75,7 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 
     lastX = xpos;
     lastY = ypos;
-
+    if(INVERT_MOUSE_X) xoffset *= -1;
+    if(INVERT_MOUSE_Y) yoffset *= -1;
     mainCamera->ProcessMouseMovement(xoffset, yoffset);
 }

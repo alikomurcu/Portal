@@ -1,0 +1,10 @@
+#ifndef SETTINGS_HPP
+#define SETTINGS_HPP
+
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
+
+#define INVERT_MOUSE_Y 1
+#define INVERT_MOUSE_X 0
+
+#endif // SETTINGS_HPP
