@@ -21,15 +21,14 @@ void keyboard(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)       // TODO: speedup logic
     {
-        mainCamera->MoveCamera(true);
+        mainCamera->ProcessKeyboard(FORWARD, 0.1f);
         // mainCamera->transform->Position += mainCamera->transform->Front * 0.1f;
     }
     else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
-        mainCamera->MoveCamera(false);
+        mainCamera->ProcessKeyboard(BACKWARD, 0.1f);
         // mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
     }
-
     else if (key == GLFW_KEY_Q && action == GLFW_PRESS)
     {
         glfwSetWindowShouldClose(window, GLFW_TRUE);

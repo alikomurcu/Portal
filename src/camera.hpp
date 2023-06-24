@@ -8,8 +8,6 @@
 enum Camera_Movement {
     FORWARD,
     BACKWARD,
-    LEFT,
-    RIGHT
 };
 
 // Default camera values
@@ -54,6 +52,5 @@ public:
     void RotatePitch(float rads); // rotate around cams local X axis
     void RotateYaw(float rads); // rotate around cams local X axis
     void RotateRoll(float rads); // rotate around cams local X axis
-    void MoveCamera(bool forward);
 };
 #endif  // CAMERA_HPP

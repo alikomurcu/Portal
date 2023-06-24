@@ -48,12 +48,8 @@ glm::mat4 Camera::GetViewMatrix()
     //For an FPS camera we can omit roll        ROLL IS OMITTED
     glm::quat orientation = qPitch * qYaw;
     orientation = glm::normalize(orientation);
-    glm::mat4 rotate = glm::mat4_cast(orientation);
-    glm::vec4 rowx = rotate[0];
-    glm::vec4 rowy = rotate[1];
-    glm::vec4 rowz = rotate[2];
-    glm::vec4 roww = rotate[3];
 
+    glm::mat4 rotate = glm::mat4_cast(orientation);
 
     glm::mat4 translate = glm::mat4(1.0f);
     translate = glm::translate(translate, -transform->Position);
@@ -70,11 +66,8 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
         transform->Position += transform->Front * velocity;
     if (direction == BACKWARD)
         transform->Position -= transform->Front * velocity;
-    if (direction == LEFT)
-        transform->Position -= transform->Right * velocity;
-    if (direction == RIGHT)
-        transform->Position += transform->Right * velocity;
 }
+
 
 // processes input received from a mouse input system. Expects the offset value in both the x and y direction.
 void Camera::ProcessMouseMovement(float xoffset, float yoffset)
@@ -148,11 +141,4 @@ void Camera::RotateRoll(float rads) // rotate around cams local X axis
     translate = glm::translate(translate, -transform->Position);
 
     viewMatrix = rotate * translate;
-}
-
-void Camera::MoveCamera(bool forward)
-{
-    glm::vec3 projectedDirection = glm::normalize(glm::vec3(transform->Front.x, 0, transform->Front.z));
-    if (forward) transform->Position += projectedDirection * 0.1f;
-    else transform->Position -= projectedDirection * 0.1f;
 }
