@@ -2,6 +2,7 @@
 
 void init() 
 {
+    Scene scene;
     mainCamera = new Camera(eyePos, eyeUp);
     shaders.push_back(Shader("shaders/vert.glsl", "shaders/frag.glsl"));
     shaders.push_back(Shader("shaders/ground_vert.glsl", "shaders/ground_frag.glsl"));
@@ -13,6 +14,7 @@ void init()
     models.push_back(Model("assets/ground.obj"));
     models.push_back(Model("assets/back_wall.obj"));
     models.push_back(Model("assets/front_wall.obj"));
+
 
     models[3].attach_texture("assets/textures/ground.jpg");
     models[4].attach_texture("assets/textures/ground.jpg");

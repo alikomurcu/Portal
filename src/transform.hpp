@@ -11,10 +11,10 @@ public:
     glm::vec3 Position;
     glm::vec3 Scale;
     glm::quat Rotation;
+    glm::fquat Orientation;
     glm::vec3 Front;
     glm::vec3 Up;
     glm::vec3 Right;
-
     Transform();
 };
 #endif // TRANSFORM_HPP

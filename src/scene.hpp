@@ -12,8 +12,7 @@ public:
     Scene();
     void draw();
     void recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, int recursionLevel, int maxRecursionLevel);
-    void drawNonPortals();
-    glm::mat4 const clippedProjMat(glm::mat4 const &destView, glm::mat4 const &projMat) const;
+    void drawNonPortals(glm::mat4 viewMat, glm::mat4 projMat);
 };
 
 #endif // SCENE_HPP

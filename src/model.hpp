@@ -62,7 +62,9 @@ class Model
     public:
         int texture_num;
         glm::mat4 modelMat, viewMat;
-        Model (const std::string &fileName);
+        glm::fquat orientation;
+        glm::vec3 position;
+        Model (const std::string &fileName, glm::vec3 position=glm::vec3(0,0,0));
         void draw (void);
         void attach_texture (const std::string &fileName);
         void attach_shader (Shader s);

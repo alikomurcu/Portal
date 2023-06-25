@@ -6,8 +6,10 @@ Scene::Scene()
 };
 
 
-void Scene::drawNonPortals()
+void Scene::drawNonPortals(glm::mat4 viewMat, glm::mat4 projMat)
 {
+    viewingMatrix = viewMat;
+    projectionMatrix = projMat;
     for (auto &model : models)
     {
         model.draw();
@@ -47,8 +49,8 @@ void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, in
 
         // Calculate view matrix as if the player was already teleported
         glm::mat4 destView = viewMat * portal.modelMat
-                             * glm::rotate(glm::mat4(1.0f), 180.0f, glm::vec3(0.0f, 1.0f, 0.0f) * portal.orientation())
-                             * glm::inverse(portal.destination()->modelMat());
+                             * glm::rotate(glm::mat4(1.0f), 180.0f, glm::vec3(0.0f, 1.0f, 0.0f) * portal.orientation)
+                             * glm::inverse(portal.destination->modelMat);
 
         // Base case, render inside of inner portal
         if (recursionLevel == maxRecursionLevel)
@@ -128,8 +130,8 @@ void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, in
     glClear(GL_DEPTH_BUFFER_BIT);
 
     // Draw portals into depth buffer
-    for (auto &pair : d_portals)
-        pair.second->draw();
+    for (auto &portal : portals)
+        portal.draw();
 
     // Reset the depth function to the default
     glDepthFunc(GL_LESS);
@@ -152,29 +154,4 @@ void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, in
 
     // Draw scene objects normally, only at recursionLevel
     drawNonPortals(viewMat, projMat);
-}
-
-glm::mat4 const Scene::clippedProjMat(glm::mat4 const &destView, glm::mat4 const &projMat) const
-{
-    float dist = glm::length(d_position);
-    glm::vec4 clipPlane(d_orientation * glm::vec3(0.0f, 0.0f, -1.0f), dist);
-    clipPlane = glm::inverse(glm::transpose(destView)) * clipPlane;
-
-    if (clipPlane.w > 0.0f)
-        return projMat;
-
-    glm::vec4 q = glm::inverse(projMat) * glm::vec4(
-            glm::sign(clipPlane.x),
-            glm::sign(clipPlane.y),
-            1.0f,
-            1.0f
-    );
-
-    glm::vec4 c = clipPlane * (2.0f / (glm::dot(clipPlane, q)));
-
-    glm::mat4 newProj = projMat;
-    // third row = clip plane - fourth row
-    newProj = glm::row(newProj, 2, c - glm::row(newProj, 3));
-
-    return newProj;
 }

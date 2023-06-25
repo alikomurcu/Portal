@@ -7,6 +7,7 @@
 #include "transform.hpp"
 #include "common.hpp"
 #include "skybox.hpp"
+#include "scene.hpp"
 
 // stb related
 #define STB_IMAGE_IMPLEMENTATION

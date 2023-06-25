@@ -96,7 +96,7 @@ bool Model::ParseObj(const std::string& fileName)
 	return true;
 }
 
-Model::Model (const std::string &fileName)
+Model::Model (const std::string &fileName, glm::vec3 position) : position(position)
 {
     glGenVertexArrays(1, &vao);
     assert(vao > 0);
