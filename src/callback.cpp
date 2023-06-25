@@ -29,6 +29,16 @@ void keyboard(GLFWwindow* window, int key, int scancode, int action, int mods)
         mainCamera->ProcessKeyboard(BACKWARD, 0.1f);
         // mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
     }
+    else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    {
+        mainCamera->ProcessKeyboard(LEFT, 0.1f);
+        // mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
+    }
+    else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    {
+        mainCamera->ProcessKeyboard(RIGHT, 0.1f);
+        // mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
+    }
     else if (key == GLFW_KEY_Q && action == GLFW_PRESS)
     {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
