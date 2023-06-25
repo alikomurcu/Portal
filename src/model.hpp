@@ -69,6 +69,7 @@ class Model
         virtual void draw (glm::mat4 viewingMatrix, glm::mat4 projectionMatrix);
         void attach_texture (const std::string &fileName);
         void attach_shader (Shader * s);
+        void set_scale(glm::vec3 scale);
         void set_position (glm::vec3 position);
         void set_orientation (glm::quat orientation);
         void set_orientation(glm::vec3 const &axis, float radAngle, bool worldSpace);

@@ -9,6 +9,7 @@ void init()
     scene->shaders.push_back(Shader("shaders/wall_vert.glsl", "shaders/wall_frag.glsl"));
 
     scene->models.push_back(Model("assets/box.obj"));
+    scene->models.push_back(Model("assets/box.obj"));
     scene->models.push_back(Model("assets/ground.obj"));
     scene->models.push_back(Model("assets/back_wall.obj"));
     scene->models.push_back(Model("assets/front_wall.obj"));
@@ -16,15 +17,23 @@ void init()
     scene->models.push_back(Model("assets/border.obj"));
 
     scene->models[0].attach_shader(&scene->shaders[0]);
-    scene->models[1].attach_shader(&scene->shaders[1]);
-    scene->models[2].attach_shader(&scene->shaders[2]);
+    scene->models[1].attach_shader(&scene->shaders[0]);
+    scene->models[2].attach_shader(&scene->shaders[1]);
     scene->models[3].attach_shader(&scene->shaders[2]);
-    scene->models[4].attach_shader(&scene->shaders[0]);
+    scene->models[4].attach_shader(&scene->shaders[2]);
     scene->models[5].attach_shader(&scene->shaders[0]);
+    scene->models[6].attach_shader(&scene->shaders[0]);
+
+    scene->models[5].set_position(scene->models[5].position + glm::vec3(0.0f, 0.0f, 10.5f));
+    scene->models[6].set_position(scene->models[6].position + glm::vec3(0.0f, 0.0f, 10.5f));
 
     scene->models[1].attach_texture("assets/textures/ground.jpg");
     scene->models[2].attach_texture("assets/textures/ground.jpg");
     scene->models[3].attach_texture("assets/textures/ground.jpg");
+
+    scene->models[0].set_position(glm::vec3(5.0f, 0.0f, -3.0f));
+    scene->models[1].set_position(glm::vec3(-5.0f, 0.0f, 3.0f));
+
 
     Skybox *skybox = new Skybox();
     skybox->initShader("shaders/skyboxvs.glsl", "shaders/skyboxfs.glsl");
@@ -39,16 +48,18 @@ void init()
     portal2->attach_shader(portalShader);
     portal1->setDestination(portal2);
     portal2->setDestination(portal1);
-    portal1->set_position(glm::vec3(3.11356f, 1.4f, -1.95163f));
-    portal2->set_position(glm::vec3(3.11356f, 1.4f, -1.95163f));
-    portal1->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), 0.f, true);
-    portal2->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), M_PI, true);
+
+    portal1->set_position(glm::vec3(-5.0f, 1.5f, 0.5f));
+    portal2->set_position(glm::vec3(5.0f, 1.5f, 0.5f));
+
+    portal1->set_orientation(glm::vec3(-2.0f, 1.0f, 0.0f), glm::radians(0.f), true);
+    portal2->set_orientation(glm::vec3(2.0f, 1.0f, 0.0f), glm::radians(0.f), true);
+
 
     scene->portals.push_back(portal1);
-
-    scene->models[4].modelMat = portal1->modelMat;
-    scene->models[5].modelMat = portal2->modelMat;
     scene->portals.push_back(portal2);
+    scene->models[5].modelMat = portal1->modelMat;
+    scene->models[6].modelMat = portal2->modelMat;
     glEnable(GL_DEPTH_TEST);
 }
 
@@ -62,7 +73,7 @@ void render(GLFWwindow* window)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         mainCamera->ProcessMovement();
-        
+
         // Temporarily here
         glm::mat4 modelingMatrix = glm::mat4(1);
         viewingMatrix = mainCamera->GetViewMatrix();

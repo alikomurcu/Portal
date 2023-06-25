@@ -22,8 +22,6 @@ void Portal::draw(glm::mat4 viewMat, glm::mat4 projMat)
     shader->setMat4("projectionMatrix", projMat);
     shader->setMat4("viewingMatrix", viewMat);
     shader->setMat4("modelingMatrix", modelMat);
-    // draw skybox as last
-    glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
     // skybox cube
     glBindVertexArray(portalVAO);
     glDrawArrays(GL_TRIANGLES, 0, 6);

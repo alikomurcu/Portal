@@ -197,13 +197,13 @@ bool Model::ParseObj(const std::string& fileName)
 	return true;
 }
 
-void Model::draw (glm::mat4 viewingMatrix, glm::mat4 projectionMatrix)
+void Model::draw (glm::mat4 viewingMat, glm::mat4 projectionMat)
 {
 	shader->use();
 
 	shader->setMat4("modelingMatrix", modelMat);
-	shader->setMat4("viewingMatrix", viewingMatrix);
-	shader->setMat4("projectionMatrix", projectionMatrix);
+	shader->setMat4("viewingMatrix", viewingMat);
+	shader->setMat4("projectionMatrix", projectionMat);
 	shader->setVec3("eyePos", eyePos);
 	
     glBindVertexArray(vao);
@@ -246,6 +246,13 @@ void Model::set_position(glm::vec3 position) {
     this->position = position;
     update_modelMat();
 }
+
+void Model::set_scale(glm::vec3 scale)
+{
+    this->scale = scale;
+    update_modelMat();
+}
+
 
 void Model::set_orientation(glm::quat orientation) {
     orientation = glm::normalize(orientation);
