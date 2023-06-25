@@ -111,25 +111,17 @@ Shader::Shader (const std::string& vertShaderName, const std::string& fragShader
     texLoc = glGetUniformLocation(program, "tex");
 }
 
-void Shader::set (void)
+void Shader::set (Model &model)
 {
     glUseProgram(program);
 
     glUniformMatrix4fv(projectionMatrixLoc, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 	glUniformMatrix4fv(viewingMatrixLoc, 1, GL_FALSE, glm::value_ptr(viewingMatrix));
-	glUniformMatrix4fv(modelingMatrixLoc, 1, GL_FALSE, glm::value_ptr(modelingMatrix));
+	glUniformMatrix4fv(modelingMatrixLoc, 1, GL_FALSE, glm::value_ptr(model.modelMat));
 
-    glUniform3fv(eyePosLoc, 1, glm::value_ptr(eyePos));
-}
-
-void Shader::set (int texture_id)
-{
-    glUseProgram(program);
-
-    glUniformMatrix4fv(projectionMatrixLoc, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
-	glUniformMatrix4fv(viewingMatrixLoc, 1, GL_FALSE, glm::value_ptr(viewingMatrix));
-	glUniformMatrix4fv(modelingMatrixLoc, 1, GL_FALSE, glm::value_ptr(modelingMatrix));
-    glUniform1i(texLoc, texture_id);
+    if (model.texture_num != -1) {
+        glUniform1i(texLoc, model.texture_num);
+    }
 
     glUniform3fv(eyePosLoc, 1, glm::value_ptr(eyePos));
 }

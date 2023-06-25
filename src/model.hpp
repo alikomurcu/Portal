@@ -3,6 +3,7 @@
 
 #include "common.hpp"
 #include "stb_image.h"
+#include "shader.hpp"
 
 struct Vertex
 {
@@ -58,10 +59,11 @@ class Model
 
     public:
         int texture_num;
-        
+        glm::mat4 modelMat, viewMat;
         Model (const std::string &fileName);
         void draw (void);
         void attach_texture (const std::string &fileName);
+        void attach_shader (Shader &shader);
 };
 
 #endif // MODEL_HPP

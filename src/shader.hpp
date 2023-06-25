@@ -3,6 +3,8 @@
 
 #include "common.hpp"
 
+class Model;
+
 class Shader
 {
     private:
@@ -20,8 +22,7 @@ class Shader
 
     public:
         Shader (const std::string& vertShaderName, const std::string& fragShaderName);
-        void set (void);
-        void set (int texture_id);
+        void set (Model& model);
 };
 
 #endif // SHADER_HPP

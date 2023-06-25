@@ -3,10 +3,17 @@
 
 #include "common.hpp"
 #include "shader.hpp"
+#include "model.hpp"
 
-class Portal
+class Portal: public Model
 {
-    // TODO
+public:
+    Portal();
+    Portal* destination;
+    glm::mat4 const clippedProjMat(glm::mat4 const &destView, glm::mat4 const &projMat) const;
+    void setDestination(Portal* dest);
 };
+
+
 
 #endif // PORTAL_HPP

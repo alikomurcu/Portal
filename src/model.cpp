@@ -229,3 +229,8 @@ void Model::attach_texture (const std::string &fileName)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
 }
+
+void Model::attach_shader (Shader &shader)
+{
+
+}
