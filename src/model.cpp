@@ -200,6 +200,8 @@ void Model::draw (void)
 	shader->use();
 
 	shader->setMat4("modelingMatrix", modelingMatrix);
+	shader->setMat4("viewingMatrix", viewingMatrix);
+	shader->setMat4("projectionMatrix", projectionMatrix);
 	shader->setVec3("eyePos", eyePos);
 	
     glBindVertexArray(vao);

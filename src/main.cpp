@@ -48,13 +48,6 @@ void render(GLFWwindow* window)
 //        viewingMatrix = glm::lookAt(eyePos, eyeDir, eyeUp);
         viewingMatrix = mainCamera->GetViewMatrix();
 
-        scene->shaders[0].setMat4("projectionMatrix", projectionMatrix);
-        scene->shaders[1].setMat4("projectionMatrix", projectionMatrix);
-        scene->shaders[2].setMat4("projectionMatrix", projectionMatrix);
-        scene->shaders[0].setMat4("viewingMatrix", viewingMatrix);
-        scene->shaders[1].setMat4("viewingMatrix", viewingMatrix);
-        scene->shaders[2].setMat4("viewingMatrix", viewingMatrix);
-
         // Example use
         scene->models[0].draw();
         scene->models[1].draw();
@@ -68,9 +61,9 @@ void render(GLFWwindow* window)
 
         // draw skybox as last
         viewingMatrix =  glm::mat4(glm::mat3(viewingMatrix));
+        skybox->shader->use();
         skybox->shader->setMat4("projectionMatrix", projectionMatrix);
         skybox->shader->setMat4("viewingMatrix", viewingMatrix);
-        skybox->shader->use();
         skybox->draw();
 
         glfwSwapBuffers(window);
