@@ -12,8 +12,8 @@ void init()
     scene->models.push_back(Model("assets/ground.obj"));
     scene->models.push_back(Model("assets/back_wall.obj"));
     scene->models.push_back(Model("assets/front_wall.obj"));
-    scene->models.push_back(Model("assets/left_border.obj"));
-    scene->models.push_back(Model("assets/right_border.obj"));
+    scene->models.push_back(Model("assets/border.obj"));
+    scene->models.push_back(Model("assets/border.obj"));
 
     scene->models[0].attach_shader(&scene->shaders[0]);
     scene->models[1].attach_shader(&scene->shaders[1]);
@@ -46,6 +46,9 @@ void init()
 
     scene->portals.push_back(portal2);
     scene->portals.push_back(portal1);
+
+    scene->models[4].modelMat = portal1->modelMat;
+    scene->models[5].modelMat = portal2->modelMat;
     glEnable(GL_DEPTH_TEST);
 }
 

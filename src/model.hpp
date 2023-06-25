@@ -61,7 +61,7 @@ class Model
     public:
         Shader* shader;
         int texture_num;
-        glm::mat4 modelMat, viewMat;
+        glm::mat4 modelMat = glm::mat4(1), viewMat;
         glm::quat orientation;
         glm::vec3 position, scale;
         Model (const std::string &fileName, glm::vec3 position=glm::vec3(0,0,0));
