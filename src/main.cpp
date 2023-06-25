@@ -12,11 +12,15 @@ void init()
     scene->models.push_back(Model("assets/ground.obj"));
     scene->models.push_back(Model("assets/back_wall.obj"));
     scene->models.push_back(Model("assets/front_wall.obj"));
+    scene->models.push_back(Model("assets/left_border.obj"));
+    scene->models.push_back(Model("assets/right_border.obj"));
 
     scene->models[0].attach_shader(&scene->shaders[0]);
     scene->models[1].attach_shader(&scene->shaders[1]);
     scene->models[2].attach_shader(&scene->shaders[2]);
     scene->models[3].attach_shader(&scene->shaders[2]);
+    scene->models[4].attach_shader(&scene->shaders[0]);
+    scene->models[5].attach_shader(&scene->shaders[0]);
 
     scene->models[1].attach_texture("assets/textures/ground.jpg");
     scene->models[2].attach_texture("assets/textures/ground.jpg");
