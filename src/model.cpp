@@ -201,7 +201,7 @@ void Model::draw (glm::mat4 viewingMatrix, glm::mat4 projectionMatrix)
 {
 	shader->use();
 
-	shader->setMat4("modelingMatrix", glm::mat4(1.0f));
+	shader->setMat4("modelingMatrix", modelMat);
 	shader->setMat4("viewingMatrix", viewingMatrix);
 	shader->setMat4("projectionMatrix", projectionMatrix);
 	shader->setVec3("eyePos", eyePos);

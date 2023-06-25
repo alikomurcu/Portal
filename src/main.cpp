@@ -14,6 +14,8 @@ void init()
     scene->models.push_back(Model("assets/front_wall.obj"));
 //    scene->models.push_back(Model("assets/left_border.obj"));
 //    scene->models.push_back(Model("assets/right_border.obj"));
+    scene->models.push_back(Model("assets/border.obj"));
+    scene->models.push_back(Model("assets/border.obj"));
 
     scene->models[0].attach_shader(&scene->shaders[0]);
     scene->models[1].attach_shader(&scene->shaders[1]);
@@ -45,6 +47,9 @@ void init()
     portal2->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), M_PI, true);
 
     scene->portals.push_back(portal1);
+
+    scene->models[4].modelMat = portal1->modelMat;
+    scene->models[5].modelMat = portal2->modelMat;
     scene->portals.push_back(portal2);
     glEnable(GL_DEPTH_TEST);
 }
