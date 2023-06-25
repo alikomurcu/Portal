@@ -2,7 +2,6 @@
 
 Scene::Scene()
 {
-
 };
 
 void Scene::drawNonPortals(glm::mat4 viewMat, glm::mat4 projMat)
@@ -13,6 +12,12 @@ void Scene::drawNonPortals(glm::mat4 viewMat, glm::mat4 projMat)
     {
         model.draw();
     }
+
+    glm::mat4 viewing =  glm::mat4(glm::mat3(viewingMatrix));
+    skybox->shader->use();
+    skybox->shader->setMat4("projectionMatrix", projectionMatrix);
+    skybox->shader->setMat4("viewingMatrix", viewing);
+    skybox->draw();
 }
 
 void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, int recursionLevel, int maxRecursionLevel)
@@ -43,13 +48,13 @@ void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, in
         glStencilMask(0xFF);
 
         // Draw portal into stencil buffer
-        portal.draw();
+        portal->draw(viewMat, projMat);
 
 
         // Calculate view matrix as if the player was already teleported
-        glm::mat4 destView = viewMat * portal.modelMat
-                             * glm::rotate(glm::mat4(1.0f), 180.0f, glm::vec3(0.0f, 1.0f, 0.0f) * portal.orientation)
-                             * glm::inverse(portal.destination->modelMat);
+        glm::mat4 destView = viewMat * portal->modelMat
+                             * glm::rotate(glm::mat4(1.0f), 180.0f, glm::vec3(0.0f, 1.0f, 0.0f) * portal->orientation)
+                             * glm::inverse(portal->destination->modelMat);
 
         // Base case, render inside of inner portal
         if (recursionLevel == maxRecursionLevel)
@@ -79,14 +84,14 @@ void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, in
 
             // Draw scene objects with destView, limited to stencil buffer
             // use an edited projection matrix to set the near plane to the portal plane
-            drawNonPortals(destView, portal.clippedProjMat(destView, projMat));
+            drawNonPortals(destView, portal->clippedProjMat(destView, projMat));
             //drawNonPortals(destView, projMat);
         }
         else
         {
             // Recursion case
             // Pass our new view matrix and the clipped projection matrix (see above)
-            recursiveDraw(destView, portal.clippedProjMat(destView, projMat), maxRecursionLevel, recursionLevel + 1);
+            recursiveDraw(destView, portal->clippedProjMat(destView, projMat), maxRecursionLevel, recursionLevel + 1);
         }
 
         // Disable color and depth drawing
@@ -108,7 +113,7 @@ void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, in
         glStencilOp(GL_DECR, GL_KEEP, GL_KEEP);
 
         // Draw portal into stencil buffer
-        portal.draw();
+        portal->draw(viewMat, projMat);
     }
 
     // Disable the stencil test and stencil writing
@@ -130,7 +135,7 @@ void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, in
 
     // Draw portals into depth buffer
     for (auto &portal : portals)
-        portal.draw();
+        portal->draw(viewMat, projMat);
 
     // Reset the depth function to the default
     glDepthFunc(GL_LESS);

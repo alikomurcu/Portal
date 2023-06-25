@@ -1,9 +1,33 @@
 #include "common.hpp"
 #include "portal.hpp"
 
-Portal::Portal() {
+Portal::Portal() : Model()
+{
+    // portal VAO
+    glGenVertexArrays(1, &portalVAO);
+    glGenBuffers(1, &portalVBO);
+    glBindVertexArray(portalVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, portalVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(portalVertices), &portalVertices, GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+
     destination = nullptr;
-    orientation = glm::fquat {1.0f, 0.0f, 0.0f, 0.0f};
+    orientation = glm::quat {1.0f, 0.0f, 0.0f, 0.0f};
+}
+
+void Portal::draw(glm::mat4 viewMat, glm::mat4 projMat)
+{
+    shader->use();
+    shader->setMat4("projectionMatrix", projMat);
+    shader->setMat4("viewingMatrix", viewMat);
+    shader->setMat4("modelingMatrix", modelMat);
+    // draw skybox as last
+    glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
+    // skybox cube
+    glBindVertexArray(portalVAO);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glBindVertexArray(0);
 }
 
 void Portal::setDestination(Portal *dest)

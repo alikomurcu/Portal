@@ -3,7 +3,7 @@
 // All of the following variables could be defined in the OpenGL
 // program and passed to this shader as uniform variables. This
 // would be necessary if their values could change during runtim.
-// However, we will not change them and therefore we define them 
+// However, we will not change them and therefore we define them
 // here for simplicity.
 
 vec3 I = vec3(1, 1, 1);          // point light intensity
@@ -38,5 +38,6 @@ void main(void)
 	vec3 specularColor = I * ks * pow(max(0, NdotH), 100);
 	vec3 ambientColor = Iamb * ka;
 
-	fragColor = vec4(diffuseColor + specularColor + ambientColor, 1);
+//	fragColor = vec4(diffuseColor + specularColor + ambientColor, 1);
+	fragColor = vec4(0.69, 0.17, 0.5, 1);
 }

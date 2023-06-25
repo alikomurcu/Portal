@@ -57,20 +57,22 @@ class Model
 
         bool ParseObj(const std::string& fileName);
 
-        Shader* shader;
 
     public:
+        Shader* shader;
         int texture_num;
         glm::mat4 modelMat, viewMat;
-        glm::fquat orientation;
-        glm::vec3 position;
+        glm::quat orientation;
+        glm::vec3 position, scale;
         Model (const std::string &fileName, glm::vec3 position=glm::vec3(0,0,0));
-
-    Model();
-
-    void draw (void);
+        Model();
+        virtual void draw (void);
         void attach_texture (const std::string &fileName);
         void attach_shader (Shader * s);
+        void set_position (glm::vec3 position);
+        void set_orientation (glm::quat orientation);
+        void set_orientation(glm::vec3 const &axis, float radAngle, bool worldSpace);
+        void update_modelMat();
 };
 
 #endif // MODEL_HPP

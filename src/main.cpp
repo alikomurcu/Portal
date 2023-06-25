@@ -8,33 +8,40 @@ void init()
     scene->shaders.push_back(Shader("shaders/ground_vert.glsl", "shaders/ground_frag.glsl"));
     scene->shaders.push_back(Shader("shaders/wall_vert.glsl", "shaders/wall_frag.glsl"));
 
-    scene->models.emplace_back("assets/left_gate.obj");
-    scene->models.push_back(Model("assets/right_gate.obj"));
     scene->models.push_back(Model("assets/box.obj"));
     scene->models.push_back(Model("assets/ground.obj"));
     scene->models.push_back(Model("assets/back_wall.obj"));
     scene->models.push_back(Model("assets/front_wall.obj"));
 
     scene->models[0].attach_shader(&scene->shaders[0]);
-    scene->models[1].attach_shader(&scene->shaders[0]);
-    scene->models[2].attach_shader(&scene->shaders[0]);
-    scene->models[3].attach_shader(&scene->shaders[1]);
-    scene->models[4].attach_shader(&scene->shaders[2]);
-    scene->models[5].attach_shader(&scene->shaders[2]);
+    scene->models[1].attach_shader(&scene->shaders[1]);
+    scene->models[2].attach_shader(&scene->shaders[2]);
+    scene->models[3].attach_shader(&scene->shaders[2]);
 
+    scene->models[1].attach_texture("assets/textures/ground.jpg");
+    scene->models[2].attach_texture("assets/textures/ground.jpg");
     scene->models[3].attach_texture("assets/textures/ground.jpg");
-    scene->models[4].attach_texture("assets/textures/ground.jpg");
-    scene->models[5].attach_texture("assets/textures/ground.jpg");
 
-    skybox = new Skybox();
+    Skybox *skybox = new Skybox();
     skybox->initShader("shaders/skyboxvs.glsl", "shaders/skyboxfs.glsl");
     skybox->shader->use();
     skybox->loadCubemap();
+    scene->skybox = skybox;
 
+    Shader *portalShader = new Shader("shaders/portal_vert.glsl", "shaders/portal_frag.glsl");
     portal1 = new Portal();
     portal2 = new Portal();
+    portal1->attach_shader(portalShader);
+    portal2->attach_shader(portalShader);
     portal1->setDestination(portal2);
     portal2->setDestination(portal1);
+    portal1->set_position(glm::vec3(-3.11356f, 1.4f, -1.95163f));
+    portal2->set_position(glm::vec3(3.11356f, 1.4f, -1.95163f));
+    portal1->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), M_PI/3.0f, true);
+    portal2->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), -M_PI/3.0f, true);
+
+    scene->portals.push_back(portal1);
+    scene->portals.push_back(portal2);
     glEnable(GL_DEPTH_TEST);
 }
 
@@ -54,24 +61,32 @@ void render(GLFWwindow* window)
 //        viewingMatrix = glm::lookAt(eyePos, eyeDir, eyeUp);
         viewingMatrix = mainCamera->GetViewMatrix();
 
-        // Example use
-        scene->models[0].draw();
-        scene->models[1].draw();
-        scene->models[2].draw();
-
-        modelingMatrix = glm::mat4(1);
-        scene->models[3].draw();
-
-        scene->models[4].draw();
-        scene->models[5].draw();
 
         scene->recursiveDraw(viewingMatrix, projectionMatrix, 0, 1);
+
+        // Example use
+//        scene->models[0].draw();
+//        scene->models[1].draw();
+//        scene->models[2].draw();
+//
+//        scene->models[3].draw();
+//
+//
+//        portal1->shader->use();
+//        portal1->shader->setMat4("projectionMatrix", projectionMatrix);
+//        portal1->shader->setMat4("viewingMatrix", viewingMatrix);
+//        portal1->shader->setMat4("modelingMatrix", portal1->modelMat);
+//        portal1->draw();
+//        portal2->shader->setMat4("modelingMatrix", portal2->modelMat);
+//        portal2->draw();
+
+//        scene->recursiveDraw(viewingMatrix, projectionMatrix, 0, 1);
         // draw skybox as last
-        viewingMatrix =  glm::mat4(glm::mat3(viewingMatrix));
-        skybox->shader->use();
-        skybox->shader->setMat4("projectionMatrix", projectionMatrix);
-        skybox->shader->setMat4("viewingMatrix", viewingMatrix);
-        skybox->draw();
+//        viewingMatrix =  glm::mat4(glm::mat3(viewingMatrix));
+//        skybox->shader->use();
+//        skybox->shader->setMat4("projectionMatrix", projectionMatrix);
+//        skybox->shader->setMat4("viewingMatrix", viewingMatrix);
+//        skybox->draw();
 
         glfwSwapBuffers(window);
         glfwPollEvents();
