@@ -31,6 +31,10 @@ void init()
     skybox->shader->use();
     skybox->loadCubemap();
 
+    portal1 = new Portal();
+    portal2 = new Portal();
+    portal1->setDestination(portal2);
+    portal2->setDestination(portal1);
     glEnable(GL_DEPTH_TEST);
 }
 
@@ -59,6 +63,7 @@ void render(GLFWwindow* window)
         scene->models[4].draw();
         scene->models[5].draw();
 
+        scene->recursiveDraw(viewingMatrix, projectionMatrix, 0, 1);
         // draw skybox as last
         viewingMatrix =  glm::mat4(glm::mat3(viewingMatrix));
         skybox->shader->use();

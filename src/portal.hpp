@@ -11,7 +11,7 @@ public:
     Portal* destination;
     Portal();
     glm::mat4 const clippedProjMat(glm::mat4 const &destView, glm::mat4 const &projMat) const;
-    void setDestination(Portal* dest);
+    void setDestination(Portal *dest);
     Portal* getDestination() const;
 };
 

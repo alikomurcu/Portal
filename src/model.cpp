@@ -242,3 +242,5 @@ void Model::attach_shader (Shader * s)
 {
 	shader = s;
 }
+
+Model::Model() {}

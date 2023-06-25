@@ -1,6 +1,11 @@
 #include "common.hpp"
 #include "portal.hpp"
 
+Portal::Portal() {
+    destination = nullptr;
+    orientation = glm::fquat {1.0f, 0.0f, 0.0f, 0.0f};
+}
+
 void Portal::setDestination(Portal *dest)
 {
     destination = dest;
