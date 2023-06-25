@@ -22,7 +22,7 @@ class Shader
 
     public:
         Shader (const std::string& vertShaderName, const std::string& fragShaderName);
-        void set (Model& model);
+        void set (Model model);
 };
 
 #endif // SHADER_HPP

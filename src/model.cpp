@@ -230,7 +230,7 @@ void Model::attach_texture (const std::string &fileName)
 	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-void Model::attach_shader (Shader &shader)
+void Model::attach_shader (Shader s)
 {
-
+	shader = &s;
 }

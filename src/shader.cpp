@@ -111,7 +111,7 @@ Shader::Shader (const std::string& vertShaderName, const std::string& fragShader
     texLoc = glGetUniformLocation(program, "tex");
 }
 
-void Shader::set (Model &model)
+void Shader::set (Model model)
 {
     glUseProgram(program);
 
