@@ -15,6 +15,12 @@ void init()
     scene->models.push_back(Model("assets/back_wall.obj"));
     scene->models.push_back(Model("assets/front_wall.obj"));
 
+    scene->models[0].attach_shader(&scene->shaders[0]);
+    scene->models[1].attach_shader(&scene->shaders[0]);
+    scene->models[2].attach_shader(&scene->shaders[0]);
+    scene->models[3].attach_shader(&scene->shaders[1]);
+    scene->models[4].attach_shader(&scene->shaders[2]);
+    scene->models[5].attach_shader(&scene->shaders[2]);
 
     scene->models[3].attach_texture("assets/textures/ground.jpg");
     scene->models[4].attach_texture("assets/textures/ground.jpg");
@@ -22,7 +28,7 @@ void init()
 
     skybox = new Skybox();
     skybox->initShader("shaders/skyboxvs.glsl", "shaders/skyboxfs.glsl");
-    skybox->shader->set();
+    skybox->shader->use();
     skybox->loadCubemap();
 
     glEnable(GL_DEPTH_TEST);
@@ -43,22 +49,19 @@ void render(GLFWwindow* window)
         viewingMatrix = mainCamera->GetViewMatrix();
 
         // Example use
-        scene->shaders[0].set();
         scene->models[0].draw();
         scene->models[1].draw();
         scene->models[2].draw();
 
         modelingMatrix = glm::mat4(1);
-        scene->shaders[1].set(scene->models[3].texture_num);
         scene->models[3].draw();
 
-        scene->shaders[2].set(scene->models[4].texture_num);
         scene->models[4].draw();
         scene->models[5].draw();
 
         // draw skybox as last
         viewingMatrix =  glm::mat4(glm::mat3(viewingMatrix));
-        skybox->shader->set();
+        skybox->shader->use();
         skybox->draw();
 
         glfwSwapBuffers(window);

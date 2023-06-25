@@ -5,7 +5,6 @@ Scene::Scene()
 
 };
 
-
 void Scene::drawNonPortals(glm::mat4 viewMat, glm::mat4 projMat)
 {
     viewingMatrix = viewMat;
@@ -44,7 +43,7 @@ void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, in
         glStencilMask(0xFF);
 
         // Draw portal into stencil buffer
-        draw();
+        portal.draw();
 
 
         // Calculate view matrix as if the player was already teleported

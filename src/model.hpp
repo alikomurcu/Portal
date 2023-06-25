@@ -67,7 +67,7 @@ class Model
         Model (const std::string &fileName, glm::vec3 position=glm::vec3(0,0,0));
         void draw (void);
         void attach_texture (const std::string &fileName);
-        void attach_shader (Shader s);
+        void attach_shader (Shader * s);
 };
 
 #endif // MODEL_HPP

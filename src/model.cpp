@@ -197,11 +197,17 @@ Model::Model (const std::string &fileName, glm::vec3 position) : position(positi
 
 void Model::draw (void)
 {
+	shader->use();
+
+	shader->setMat4("modelingMatrix", modelingMatrix);
+	shader->setVec3("eyePos", eyePos);
+	
     glBindVertexArray(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 
 	if (texture_num >= 0)
 	{
+		shader->setInt("tex", texture_num);
 		glActiveTexture(GL_TEXTURE0 + texture_num);
 		glBindTexture(GL_TEXTURE_2D, texture);
 	}
@@ -230,7 +236,7 @@ void Model::attach_texture (const std::string &fileName)
 	glGenerateMipmap(GL_TEXTURE_2D);
 }
 
-void Model::attach_shader (Shader s)
+void Model::attach_shader (Shader * s)
 {
-	shader = &s;
+	shader = s;
 }

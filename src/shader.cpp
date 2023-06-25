@@ -103,25 +103,4 @@ Shader::Shader (const std::string& vertShaderName, const std::string& fragShader
         std::cout << "Program link failed" << std::endl;
         exit(-1);
     }
-
-    modelingMatrixLoc = glGetUniformLocation(program, "modelingMatrix");
-    viewingMatrixLoc = glGetUniformLocation(program, "viewingMatrix");
-    projectionMatrixLoc = glGetUniformLocation(program, "projectionMatrix");
-    eyePosLoc = glGetUniformLocation(program, "eyePos");
-    texLoc = glGetUniformLocation(program, "tex");
-}
-
-void Shader::set (Model model)
-{
-    glUseProgram(program);
-
-    glUniformMatrix4fv(projectionMatrixLoc, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
-	glUniformMatrix4fv(viewingMatrixLoc, 1, GL_FALSE, glm::value_ptr(viewingMatrix));
-	glUniformMatrix4fv(modelingMatrixLoc, 1, GL_FALSE, glm::value_ptr(model.modelMat));
-
-    if (model.texture_num != -1) {
-        glUniform1i(texLoc, model.texture_num);
-    }
-
-    glUniform3fv(eyePosLoc, 1, glm::value_ptr(eyePos));
 }

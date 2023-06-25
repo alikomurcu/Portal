@@ -12,7 +12,6 @@ public:
     std::vector<Shader> shaders;
 
     Scene();
-    void draw();
     void recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, int recursionLevel, int maxRecursionLevel);
     void drawNonPortals(glm::mat4 viewMat, glm::mat4 projMat);
 };
