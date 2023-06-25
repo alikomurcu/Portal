@@ -6,16 +6,14 @@ Scene::Scene()
 
 void Scene::drawNonPortals(glm::mat4 viewMat, glm::mat4 projMat)
 {
-    viewingMatrix = viewMat;
-    projectionMatrix = projMat;
     for (auto &model : models)
     {
-        model.draw();
+        model.draw(viewMat, projMat);
     }
 
-    glm::mat4 viewing =  glm::mat4(glm::mat3(viewingMatrix));
+    glm::mat4 viewing =  glm::mat4(glm::mat3(viewMat));
     skybox->shader->use();
-    skybox->shader->setMat4("projectionMatrix", projectionMatrix);
+    skybox->shader->setMat4("projectionMatrix", projMat);
     skybox->shader->setMat4("viewingMatrix", viewing);
     skybox->draw();
 }
@@ -24,7 +22,6 @@ void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, in
 {
     for (auto &portal : portals)
     {
-
         // Disable color and depth drawing
         glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
         glDepthMask(GL_FALSE);
@@ -91,7 +88,7 @@ void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, in
         {
             // Recursion case
             // Pass our new view matrix and the clipped projection matrix (see above)
-            recursiveDraw(destView, portal->clippedProjMat(destView, projMat), maxRecursionLevel, recursionLevel + 1);
+            recursiveDraw(destView, portal->clippedProjMat(destView, projMat), recursionLevel+1, maxRecursionLevel);
         }
 
         // Disable color and depth drawing

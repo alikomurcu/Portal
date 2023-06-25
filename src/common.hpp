@@ -29,7 +29,7 @@ inline int gWidth, gHeight;
 
 inline glm::mat4 projectionMatrix;
 inline glm::mat4 viewingMatrix;
-inline glm::mat4 modelingMatrix;
+//inline glm::mat4 modelingMatrix;
 
 inline std::vector<GLuint> programs;
 

@@ -61,7 +61,7 @@ glm::mat4 const Portal::clippedProjMat(glm::mat4 const &viewMat, glm::mat4 const
 
     glm::mat4 newProj = projMat;
     // third row = clip plane - fourth row
-    // newProj = glm::row(newProj, 2, c - glm::row(newProj, 3));
+    newProj = glm::row(newProj, 2, c - glm::row(newProj, 3));
 
     return newProj;
 }

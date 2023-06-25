@@ -40,8 +40,8 @@ void init()
     portal1->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), M_PI/3.0f, true);
     portal2->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), -M_PI/3.0f, true);
 
-    scene->portals.push_back(portal1);
     scene->portals.push_back(portal2);
+    scene->portals.push_back(portal1);
     glEnable(GL_DEPTH_TEST);
 }
 
@@ -57,36 +57,11 @@ void render(GLFWwindow* window)
         mainCamera->ProcessMovement();
         
         // Temporarily here
-        modelingMatrix = glm::mat4(1);
-//        viewingMatrix = glm::lookAt(eyePos, eyeDir, eyeUp);
+        glm::mat4 modelingMatrix = glm::mat4(1);
         viewingMatrix = mainCamera->GetViewMatrix();
 
 
-        scene->recursiveDraw(viewingMatrix, projectionMatrix, 0, 1);
-
-        // Example use
-//        scene->models[0].draw();
-//        scene->models[1].draw();
-//        scene->models[2].draw();
-//
-//        scene->models[3].draw();
-//
-//
-//        portal1->shader->use();
-//        portal1->shader->setMat4("projectionMatrix", projectionMatrix);
-//        portal1->shader->setMat4("viewingMatrix", viewingMatrix);
-//        portal1->shader->setMat4("modelingMatrix", portal1->modelMat);
-//        portal1->draw();
-//        portal2->shader->setMat4("modelingMatrix", portal2->modelMat);
-//        portal2->draw();
-
-//        scene->recursiveDraw(viewingMatrix, projectionMatrix, 0, 1);
-        // draw skybox as last
-//        viewingMatrix =  glm::mat4(glm::mat3(viewingMatrix));
-//        skybox->shader->use();
-//        skybox->shader->setMat4("projectionMatrix", projectionMatrix);
-//        skybox->shader->setMat4("viewingMatrix", viewingMatrix);
-//        skybox->draw();
+        scene->recursiveDraw(viewingMatrix, projectionMatrix, 0, 4);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

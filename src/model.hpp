@@ -66,7 +66,7 @@ class Model
         glm::vec3 position, scale;
         Model (const std::string &fileName, glm::vec3 position=glm::vec3(0,0,0));
         Model();
-        virtual void draw (void);
+        virtual void draw (glm::mat4 viewingMatrix, glm::mat4 projectionMatrix);
         void attach_texture (const std::string &fileName);
         void attach_shader (Shader * s);
         void set_position (glm::vec3 position);
