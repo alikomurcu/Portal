@@ -12,8 +12,6 @@ void init()
     scene->models.push_back(Model("assets/ground.obj"));
     scene->models.push_back(Model("assets/back_wall.obj"));
     scene->models.push_back(Model("assets/front_wall.obj"));
-//    scene->models.push_back(Model("assets/left_border.obj"));
-//    scene->models.push_back(Model("assets/right_border.obj"));
     scene->models.push_back(Model("assets/border.obj"));
     scene->models.push_back(Model("assets/border.obj"));
 
@@ -21,8 +19,8 @@ void init()
     scene->models[1].attach_shader(&scene->shaders[1]);
     scene->models[2].attach_shader(&scene->shaders[2]);
     scene->models[3].attach_shader(&scene->shaders[2]);
-//    scene->models[4].attach_shader(&scene->shaders[0]);
-//    scene->models[5].attach_shader(&scene->shaders[0]);
+    scene->models[4].attach_shader(&scene->shaders[0]);
+    scene->models[5].attach_shader(&scene->shaders[0]);
 
     scene->models[1].attach_texture("assets/textures/ground.jpg");
     scene->models[2].attach_texture("assets/textures/ground.jpg");
@@ -41,7 +39,7 @@ void init()
     portal2->attach_shader(portalShader);
     portal1->setDestination(portal2);
     portal2->setDestination(portal1);
-    portal1->set_position(glm::vec3(-3.11356f, 1.4f, -1.95163f));
+    portal1->set_position(glm::vec3(3.11356f, 1.4f, -1.95163f));
     portal2->set_position(glm::vec3(3.11356f, 1.4f, -1.95163f));
     portal1->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), 0.f, true);
     portal2->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), M_PI, true);
