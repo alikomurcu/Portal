@@ -11,6 +11,6 @@ out vec2 texCoord;
 
 void main(void)
 {
-    texCoord = inVertex.xy * 1; // multiply to increase resolution
+    texCoord = inVertex.xz * 1; // multiply to increase resolution
     gl_Position = projectionMatrix * viewingMatrix * modelingMatrix * vec4(inVertex, 1);
 }
