@@ -47,6 +47,8 @@ void render(GLFWwindow* window)
         glClearStencil(0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
+        mainCamera->ProcessMovement();
+        
         // Temporarily here
         modelingMatrix = glm::mat4(1);
 //        viewingMatrix = glm::lookAt(eyePos, eyeDir, eyeUp);

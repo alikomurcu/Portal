@@ -16,7 +16,7 @@ enum Camera_Movement {
 const float YAW         =  0.0f;
 const float PITCH       =  0.0f;
 const float ROLL        =  0.0f;
-const float SPEED       =  5.0f;
+const float SPEED       =  0.1f;
 const float SENSITIVITY =  0.1f;
 const float ZOOM        =  90.0f;
 
@@ -44,7 +44,7 @@ public:
     // returns the view matrix calculated using Euler Angles and the LookAt Matrix
     glm::mat4 GetViewMatrix();
     // processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
-    void ProcessKeyboard(Camera_Movement direction, float deltaTime);
+    void ProcessMovement(void);
     // processes input received from a mouse input system. Expects the offset value in both the x and y direction.
     void ProcessMouseMovement(float xoffset, float yoffset);
     // processes input received from a mouse scroll-wheel event. Only requires input on the vertical wheel-axis
@@ -54,5 +54,10 @@ public:
     void RotatePitch(float rads); // rotate around cams local X axis
     void RotateYaw(float rads); // rotate around cams local X axis
     void RotateRoll(float rads); // rotate around cams local X axis
+
+    bool forwardMovement;
+    bool backwardMovement;
+    bool leftMovement;
+    bool rightMovement;
 };
 #endif  // CAMERA_HPP

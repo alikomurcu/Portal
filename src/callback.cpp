@@ -19,24 +19,44 @@ void reshape(GLFWwindow* window, int w, int h)
 
 void keyboard(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)       // TODO: speedup logic
+    if (key == GLFW_KEY_W && action == GLFW_PRESS)       // TODO: speedup logic
     {
-        mainCamera->ProcessKeyboard(FORWARD, 0.1f);
+        mainCamera->forwardMovement = true;
         // mainCamera->transform->Position += mainCamera->transform->Front * 0.1f;
     }
-    else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+    else if (key == GLFW_KEY_S && action == GLFW_PRESS)
     {
-        mainCamera->ProcessKeyboard(BACKWARD, 0.1f);
+        mainCamera->backwardMovement = true;
         // mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
     }
-    else if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    else if (key == GLFW_KEY_A && action == GLFW_PRESS)
     {
-        mainCamera->ProcessKeyboard(LEFT, 0.1f);
+        mainCamera->leftMovement = true;
         // mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
     }
-    else if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+    else if (key == GLFW_KEY_D && action == GLFW_PRESS)
     {
-        mainCamera->ProcessKeyboard(RIGHT, 0.1f);
+        mainCamera->rightMovement = true;
+        // mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
+    }
+    else if (key == GLFW_KEY_W && action == GLFW_RELEASE)       // TODO: speedup logic
+    {
+        mainCamera->forwardMovement = false;
+        // mainCamera->transform->Position += mainCamera->transform->Front * 0.1f;
+    }
+    else if (key == GLFW_KEY_S && action == GLFW_RELEASE)
+    {
+        mainCamera->backwardMovement = false;
+        // mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
+    }
+    else if (key == GLFW_KEY_A && action == GLFW_RELEASE)
+    {
+        mainCamera->leftMovement = false;
+        // mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
+    }
+    else if (key == GLFW_KEY_D && action == GLFW_RELEASE)
+    {
+        mainCamera->rightMovement = false;
         // mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
     }
     else if (key == GLFW_KEY_Q && action == GLFW_PRESS)
