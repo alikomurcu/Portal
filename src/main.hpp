@@ -13,10 +13,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-std::vector<Shader> shaders;
-
-std::vector<Model> models;
-
+inline Scene *scene;
 
 inline Skybox* skybox;
 

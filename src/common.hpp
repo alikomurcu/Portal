@@ -17,7 +17,7 @@
 #include <glm/gtc/type_ptr.hpp> 
 #include <glm/gtc/quaternion.hpp>
 #include <glm/gtx/quaternion.hpp>
-
+#include <glm/gtc/matrix_access.hpp>
 // Macros
 #define BUFFER_OFFSET(i) ((char*)NULL + (i))
 
