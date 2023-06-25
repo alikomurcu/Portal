@@ -65,7 +65,10 @@ class Model
         glm::fquat orientation;
         glm::vec3 position;
         Model (const std::string &fileName, glm::vec3 position=glm::vec3(0,0,0));
-        void draw (void);
+
+    Model();
+
+    void draw (void);
         void attach_texture (const std::string &fileName);
         void attach_shader (Shader * s);
 };

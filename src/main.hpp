@@ -17,4 +17,5 @@ inline Scene *scene;
 
 inline Skybox* skybox;
 
+inline Portal *portal1, *portal2;
 #endif // MAIN_HPP
