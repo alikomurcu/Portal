@@ -27,9 +27,9 @@ void init()
     scene->models[5].set_position(scene->models[5].position + glm::vec3(0.0f, 0.0f, 10.5f));
     scene->models[6].set_position(scene->models[6].position + glm::vec3(0.0f, 0.0f, 10.5f));
 
-    scene->models[1].attach_texture("assets/textures/ground.jpg");
     scene->models[2].attach_texture("assets/textures/ground.jpg");
     scene->models[3].attach_texture("assets/textures/ground.jpg");
+    scene->models[4].attach_texture("assets/textures/ground.jpg");
 
     scene->models[0].set_position(glm::vec3(5.0f, 0.0f, -3.0f));
     scene->models[1].set_position(glm::vec3(-5.0f, 0.0f, 3.0f));
@@ -49,11 +49,11 @@ void init()
     portal1->setDestination(portal2);
     portal2->setDestination(portal1);
 
-    portal1->set_position(glm::vec3(-5.0f, 1.5f, 0.5f));
-    portal2->set_position(glm::vec3(5.0f, 1.5f, 0.5f));
+    portal1->set_position(glm::vec3(-2.0f, 1.5f, 0.5f));
+    portal2->set_position(glm::vec3(2.0f, 1.5f, 0.5f));
 
-    portal1->set_orientation(glm::vec3(-2.0f, 1.0f, 0.0f), glm::radians(0.f), true);
-    portal2->set_orientation(glm::vec3(2.0f, 1.0f, 0.0f), glm::radians(0.f), true);
+    portal1->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(90.f), true);
+    portal2->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(-90.f), true);
 
 
     scene->portals.push_back(portal1);
@@ -61,6 +61,7 @@ void init()
     scene->models[5].modelMat = portal1->modelMat;
     scene->models[6].modelMat = portal2->modelMat;
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
 }
 
 void render(GLFWwindow* window)
@@ -75,9 +76,7 @@ void render(GLFWwindow* window)
         mainCamera->ProcessMovement();
 
         // Temporarily here
-        glm::mat4 modelingMatrix = glm::mat4(1);
         viewingMatrix = mainCamera->GetViewMatrix();
-
 
         scene->recursiveDraw(viewingMatrix, projectionMatrix, 4, 0);
 

@@ -6,9 +6,9 @@
 #include "model.hpp"
 
 inline float portalVertices[] = {
-        1.0f, 1.4f, 0.0f,
         -1.0f, -1.4f, 0.0f,
         1.0f, -1.4f, 0.0f,
+        1.0f, 1.4f, 0.0f,
 
         1.0f, 1.4f, 0.0f,
         -1.0f,  1.4f, 0.0f,
@@ -20,6 +20,8 @@ class Portal: public Model
 protected:
     unsigned int portalVAO, portalVBO;
 public:
+    float angle;
+    glm::vec3 normal = glm::vec3(0, 0, 1);
     Portal* destination;
     Portal();
     glm::mat4 const clippedProjMat(glm::mat4 const &destView, glm::mat4 const &projMat) const;
