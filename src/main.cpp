@@ -49,10 +49,12 @@ void init()
     portal2->attach_shader(portalShader);
     portal1->setDestination(portal2);
     portal2->setDestination(portal1);
-    portal1->set_position(portal1Pos);
-    portal2->set_position(portal2Pos);
-    portal1->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), portal1Angle, true);
-    portal2->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), portal2Angle, true);
+    portal1->set_position(glm::vec3(-2.0f, 1.5f, 0.5f));
+    portal2->set_position(glm::vec3(2.0f, 1.5f, 0.5f));
+    portal1->angle = glm::radians(0.f);
+    portal2->angle = glm::radians(-90.f);
+    portal1->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), portal1->angle, true);
+    portal2->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), portal2->angle, true);
 
     portal1->normal = glm::inverse(glm::transpose(glm::mat3(portal1->modelMat))) * glm::vec3(0, 0, 1);
     portal2->normal = glm::inverse(glm::transpose(glm::mat3(portal2->modelMat))) * glm::vec3(0, 0, 1);
@@ -84,6 +86,13 @@ void collisionHandler (Portal *portal)
         mainCamera->transform->Position.y += 0.5;
         mainCamera->transform->Position.x += 0.15 * portal->destination->normal.x;
         mainCamera->transform->Position.z += 0.15 * portal->destination->normal.z;
+
+        //mainCamera->Yaw += glm::degrees(portal->destination->angle) - glm::degrees(portal->angle);
+
+        float d_product = glm::dot(-portal->normal, portal->destination->normal);
+        float dist_mult = glm::length(-portal->normal) * glm::length(portal->destination->normal);
+        float angle = acos(d_product / dist_mult);
+        mainCamera->Yaw += glm::degrees(angle);
     }
 }
 
@@ -97,7 +106,7 @@ void render(GLFWwindow* window)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         mainCamera->ProcessMovement();
-
+        
         collisionHandler(portal1);
         collisionHandler(portal2);
         
