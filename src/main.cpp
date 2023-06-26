@@ -49,11 +49,12 @@ void init()
     portal1->setDestination(portal2);
     portal2->setDestination(portal1);
 
+
     portal1->set_position(glm::vec3(-5.0f, 1.5f, 0.5f));
     portal2->set_position(glm::vec3(5.0f, 1.5f, 0.5f));
 
-    portal1->set_orientation(glm::vec3(-2.0f, 1.0f, 0.0f), glm::radians(0.f), true);
-    portal2->set_orientation(glm::vec3(2.0f, 1.0f, 0.0f), glm::radians(0.f), true);
+    portal1->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(-90.f), true);
+    portal2->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(90.f), true);
 
 
     scene->portals.push_back(portal1);
@@ -77,7 +78,6 @@ void render(GLFWwindow* window)
         // Temporarily here
         glm::mat4 modelingMatrix = glm::mat4(1);
         viewingMatrix = mainCamera->GetViewMatrix();
-
 
         scene->recursiveDraw(viewingMatrix, projectionMatrix, 4, 0);
 
