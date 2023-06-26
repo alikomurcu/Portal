@@ -16,6 +16,8 @@ void Scene::drawNonPortals(glm::mat4 viewMat, glm::mat4 projMat)
     skybox->shader->setMat4("projectionMatrix", projMat);
     skybox->shader->setMat4("viewingMatrix", viewing);
     skybox->draw();
+
+    box->draw(viewMat, projMat);
 }
 
 void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, size_t maxRecursionLevel, size_t recursionLevel)

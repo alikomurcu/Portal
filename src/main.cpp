@@ -7,9 +7,9 @@ void init()
     scene->shaders.push_back(Shader("shaders/vert.glsl", "shaders/frag.glsl"));
     scene->shaders.push_back(Shader("shaders/ground_vert.glsl", "shaders/ground_frag.glsl"));
     scene->shaders.push_back(Shader("shaders/wall_vert.glsl", "shaders/wall_frag.glsl"));
+    scene->shaders.push_back(Shader("shaders/border_vert.glsl", "shaders/border_frag.glsl"));
 
-    scene->models.push_back(Model("assets/box.obj"));
-    scene->models.push_back(Model("assets/box.obj"));
+    scene->models.push_back(Model("assets/box.obj")); // Use 0th slot for the moving object
     scene->models.push_back(Model("assets/ground.obj"));
     scene->models.push_back(Model("assets/back_wall.obj"));
     scene->models.push_back(Model("assets/front_wall.obj"));
@@ -17,29 +17,29 @@ void init()
     scene->models.push_back(Model("assets/border.obj"));
 
     scene->models[0].attach_shader(&scene->shaders[0]);
-    scene->models[1].attach_shader(&scene->shaders[0]);
-    scene->models[2].attach_shader(&scene->shaders[1]);
+    scene->models[1].attach_shader(&scene->shaders[1]);
+    scene->models[2].attach_shader(&scene->shaders[2]);
     scene->models[3].attach_shader(&scene->shaders[2]);
-    scene->models[4].attach_shader(&scene->shaders[2]);
-    scene->models[5].attach_shader(&scene->shaders[0]);
-    scene->models[6].attach_shader(&scene->shaders[0]);
+    scene->models[4].attach_shader(&scene->shaders[3]);
+    scene->models[5].attach_shader(&scene->shaders[3]);
 
-    scene->models[5].set_position(scene->models[5].position + glm::vec3(0.0f, 0.0f, 10.5f));
-    scene->models[6].set_position(scene->models[6].position + glm::vec3(0.0f, 0.0f, 10.5f));
+    scene->models[4].set_position(scene->models[5].position + glm::vec3(0.0f, 0.0f, 10.5f));
+    scene->models[5].set_position(scene->models[6].position + glm::vec3(0.0f, 0.0f, 10.5f));
 
+    scene->models[1].attach_texture("assets/textures/ground.jpg");
     scene->models[2].attach_texture("assets/textures/ground.jpg");
     scene->models[3].attach_texture("assets/textures/ground.jpg");
-    scene->models[4].attach_texture("assets/textures/ground.jpg");
 
-    scene->models[0].set_position(glm::vec3(5.0f, 0.0f, -3.0f));
-    scene->models[1].set_position(glm::vec3(-5.0f, 0.0f, 3.0f));
-
+    scene->models[0].set_position(glm::vec3(0.0f, 1.0f, 0.5f));
 
     Skybox *skybox = new Skybox();
     skybox->initShader("shaders/skyboxvs.glsl", "shaders/skyboxfs.glsl");
     skybox->shader->use();
     skybox->loadCubemap();
     scene->skybox = skybox;
+
+    BoxModel *box = new BoxModel();
+    scene->box = box;
 
     Shader *portalShader = new Shader("shaders/portal_vert.glsl", "shaders/portal_frag.glsl");
     portal1 = new Portal();
@@ -49,9 +49,9 @@ void init()
     portal2->attach_shader(portalShader);
     portal1->setDestination(portal2);
     portal2->setDestination(portal1);
-    portal1->set_position(glm::vec3(-2.0f, 1.5f, 0.5f));
-    portal2->set_position(glm::vec3(2.0f, 1.5f, 0.5f));
-    portal1->angle = glm::radians(0.f);
+    portal1->set_position(glm::vec3(-2.0f, 1.5f, 0.0f));
+    portal2->set_position(glm::vec3(2.0f, 1.5f, 0.0f));
+    portal1->angle = glm::radians(90.f);
     portal2->angle = glm::radians(-90.f);
     portal1->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), portal1->angle, true);
     portal2->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), portal2->angle, true);
@@ -62,8 +62,8 @@ void init()
     scene->portals.push_back(portal1);
     scene->portals.push_back(portal2);
 
-    scene->models[5].modelMat = portal1->modelMat;
-    scene->models[6].modelMat = portal2->modelMat;
+    scene->models[4].modelMat = portal1->modelMat;
+    scene->models[5].modelMat = portal2->modelMat;
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -72,7 +72,7 @@ void init()
 void collisionHandler (Portal *portal)
 {
     float collision = glm::dot((mainCamera->transform->Position - portal->position), (portal->normal)); // Plane equation
-    float behind_control = glm::dot(portal->normal, mainCamera->transform->Front);
+    //float behind_control = glm::dot(portal->normal, mainCamera->transform->Front);
 
     glm::vec2 temp1 = glm::vec2(mainCamera->transform->Position.x, mainCamera->transform->Position.z);
     glm::vec2 temp2 = glm::vec2(portal->position.x, portal->position.z);
@@ -84,15 +84,39 @@ void collisionHandler (Portal *portal)
         mainCamera->transform->Position.y -= 0.5;
         mainCamera->transform->Position += portal->destination->position - portal->position;
         mainCamera->transform->Position.y += 0.5;
-        mainCamera->transform->Position.x += 0.15 * portal->destination->normal.x;
-        mainCamera->transform->Position.z += 0.15 * portal->destination->normal.z;
+        mainCamera->transform->Position.x += 0.25 * portal->destination->normal.x;
+        mainCamera->transform->Position.z += 0.25 * portal->destination->normal.z;
 
         //mainCamera->Yaw += glm::degrees(portal->destination->angle) - glm::degrees(portal->angle);
 
         float d_product = glm::dot(-portal->normal, portal->destination->normal);
         float dist_mult = glm::length(-portal->normal) * glm::length(portal->destination->normal);
         float angle = acos(d_product / dist_mult);
-        mainCamera->Yaw += glm::degrees(angle);
+        
+        //mainCamera->Yaw += glm::degrees(angle);
+    }
+
+    collision = glm::dot((scene->models[0].position - portal->position), (portal->normal));
+    temp1 = glm::vec2(scene->models[0].position.x, scene->models[0].position.z);
+    temp2 = glm::vec2(portal->position.x, portal->position.z);
+    dist = glm::distance(temp1, temp2);
+
+    if (dist < PORTAL_WIDTH / 2.0 && abs(collision) < 0.1)
+    {
+        std::cout << "Teleported!!!" << std::endl;
+        scene->models[0].position.y -= 0.5;
+        scene->models[0].position += portal->destination->position - portal->position;
+        scene->models[0].position.y += 0.5;
+        scene->models[0].position.x += 0.25 * portal->destination->normal.x;
+        scene->models[0].position.z += 0.25 * portal->destination->normal.z;
+
+        //mainCamera->Yaw += glm::degrees(portal->destination->angle) - glm::degrees(portal->angle);
+
+        float d_product = glm::dot(-portal->normal, portal->destination->normal);
+        float dist_mult = glm::length(-portal->normal) * glm::length(portal->destination->normal);
+        float angle = acos(d_product / dist_mult);
+        
+        //mainCamera->Yaw += glm::degrees(angle);
     }
 }
 
@@ -106,13 +130,20 @@ void render(GLFWwindow* window)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         mainCamera->ProcessMovement();
-        
+
         collisionHandler(portal1);
         collisionHandler(portal2);
-        
+
+        scene->models[0].position.x += 0.01; // Box without geometry shader
+        scene->models[0].set_position(scene->models[0].position);
+
+        scene->box->position.x += 0.01; // Box with geometry shader
+        scene->box->set_position(scene->box->position);
+
+        //std::cout << mainCamera->transform->Position.x << " " <<  mainCamera->transform->Position.y << " " << mainCamera->transform->Position.z << std::endl;
         viewingMatrix = mainCamera->GetViewMatrix();
 
-        scene->recursiveDraw(viewingMatrix, projectionMatrix, 4, 0);
+        scene->recursiveDraw(viewingMatrix, projectionMatrix, 5, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

@@ -5,7 +5,7 @@
 
 class Shader
 {
-    private:
+    protected:
         GLuint program;
 
         bool ReadDataFromFile(const std::string& fileName, std::string& data);
@@ -13,6 +13,7 @@ class Shader
         GLuint createFS(const std::string& shaderName);
 
     public:
+        Shader () {}
         Shader (const std::string& vertShaderName, const std::string& fragShaderName);
         // activate the shader
         // ------------------------------------------------------------------------
