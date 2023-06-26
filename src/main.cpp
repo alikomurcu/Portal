@@ -44,24 +44,47 @@ void init()
     Shader *portalShader = new Shader("shaders/portal_vert.glsl", "shaders/portal_frag.glsl");
     portal1 = new Portal();
     portal2 = new Portal();
+
     portal1->attach_shader(portalShader);
     portal2->attach_shader(portalShader);
     portal1->setDestination(portal2);
     portal2->setDestination(portal1);
+    portal1->set_position(portal1Pos);
+    portal2->set_position(portal2Pos);
+    portal1->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), portal1Angle, true);
+    portal2->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), portal2Angle, true);
 
-    portal1->set_position(glm::vec3(-2.0f, 1.5f, 0.5f));
-    portal2->set_position(glm::vec3(2.0f, 1.5f, 0.5f));
-
-    portal1->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(90.f), true);
-    portal2->set_orientation(glm::vec3(0.0f, 1.0f, 0.0f), glm::radians(-90.f), true);
-
+    portal1->normal = glm::inverse(glm::transpose(glm::mat3(portal1->modelMat))) * glm::vec3(0, 0, 1);
+    portal2->normal = glm::inverse(glm::transpose(glm::mat3(portal2->modelMat))) * glm::vec3(0, 0, 1);
 
     scene->portals.push_back(portal1);
     scene->portals.push_back(portal2);
+
     scene->models[5].modelMat = portal1->modelMat;
     scene->models[6].modelMat = portal2->modelMat;
+
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+}
+
+void collisionHandler (Portal *portal)
+{
+    float collision = glm::dot((mainCamera->transform->Position - portal->position), (portal->normal)); // Plane equation
+    float behind_control = glm::dot(portal->normal, mainCamera->transform->Front);
+
+    glm::vec2 temp1 = glm::vec2(mainCamera->transform->Position.x, mainCamera->transform->Position.z);
+    glm::vec2 temp2 = glm::vec2(portal->position.x, portal->position.z);
+    float dist = glm::distance(temp1, temp2); // Point distance
+
+    if (dist < PORTAL_WIDTH / 2.0 && abs(collision) < 0.1)
+    {
+        std::cout << "Teleported!!!" << std::endl;
+        mainCamera->transform->Position.y -= 0.5;
+        mainCamera->transform->Position += portal->destination->position - portal->position;
+        mainCamera->transform->Position.y += 0.5;
+        mainCamera->transform->Position.x += 0.15 * portal->destination->normal.x;
+        mainCamera->transform->Position.z += 0.15 * portal->destination->normal.z;
+    }
 }
 
 void render(GLFWwindow* window)
@@ -75,7 +98,9 @@ void render(GLFWwindow* window)
 
         mainCamera->ProcessMovement();
 
-        // Temporarily here
+        collisionHandler(portal1);
+        collisionHandler(portal2);
+        
         viewingMatrix = mainCamera->GetViewMatrix();
 
         scene->recursiveDraw(viewingMatrix, projectionMatrix, 4, 0);

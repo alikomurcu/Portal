@@ -18,4 +18,11 @@ inline Scene *scene;
 inline Skybox* skybox;
 
 inline Portal *portal1, *portal2;
+
+glm::vec3 portal1Pos(-2.0f, 1.5f, 0.5f);
+glm::vec3 portal2Pos(2.0f, 1.5f, 0.5f);
+
+float portal1Angle = glm::radians(90.f);
+float portal2Angle = glm::radians(-90.f);
+
 #endif // MAIN_HPP

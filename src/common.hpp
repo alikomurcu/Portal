@@ -20,6 +20,7 @@
 #include <glm/gtc/matrix_access.hpp>
 // Macros
 #define BUFFER_OFFSET(i) ((char*)NULL + (i))
+#define PORTAL_WIDTH 2
 
 // Settings
 #include "settings.hpp"
@@ -34,7 +35,7 @@ inline glm::mat4 viewingMatrix;
 inline std::vector<GLuint> programs;
 
 // Camera in the origin, looking to -z and +y is up.
-inline glm::vec3 eyePos(0., 2., 4.);
+inline glm::vec3 eyePos(0., 2., 4.); //TODO: eyePos should be portal center + 0.5 height
 inline glm::vec3 eyeDir(0., 1., 0.);
 inline glm::vec3 eyeUp(0., 0., 1.);
 
