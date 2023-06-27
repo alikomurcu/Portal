@@ -19,63 +19,41 @@ void reshape(GLFWwindow* window, int w, int h)
 
 void keyboard(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if (key == GLFW_KEY_W && action == GLFW_PRESS)       // TODO: speedup logic
+    if (key == GLFW_KEY_W && action == GLFW_PRESS)
     {
         mainCamera->forwardMovement = true;
-        // mainCamera->transform->Position += mainCamera->transform->Front * 0.1f;
     }
     else if (key == GLFW_KEY_S && action == GLFW_PRESS)
     {
         mainCamera->backwardMovement = true;
-        // mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
     }
     else if (key == GLFW_KEY_A && action == GLFW_PRESS)
     {
         mainCamera->leftMovement = true;
-        // mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
     }
     else if (key == GLFW_KEY_D && action == GLFW_PRESS)
     {
         mainCamera->rightMovement = true;
-        // mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
     }
     else if (key == GLFW_KEY_W && action == GLFW_RELEASE)       // TODO: speedup logic
     {
         mainCamera->forwardMovement = false;
-        // mainCamera->transform->Position += mainCamera->transform->Front * 0.1f;
     }
     else if (key == GLFW_KEY_S && action == GLFW_RELEASE)
     {
         mainCamera->backwardMovement = false;
-        // mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
     }
     else if (key == GLFW_KEY_A && action == GLFW_RELEASE)
     {
         mainCamera->leftMovement = false;
-        // mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
     }
     else if (key == GLFW_KEY_D && action == GLFW_RELEASE)
     {
         mainCamera->rightMovement = false;
-        // mainCamera->transform->Position -= mainCamera->transform->Front * 0.1f;
     }
     else if (key == GLFW_KEY_Q && action == GLFW_PRESS)
     {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
-    }
-    else if (key == GLFW_KEY_G && action == GLFW_PRESS)
-    {
-        //glShadeModel(GL_SMOOTH);
-        //activeProgramIndex = 0;
-    }
-    else if (key == GLFW_KEY_P && action == GLFW_PRESS)
-    {
-        //glShadeModel(GL_SMOOTH);
-        //activeProgramIndex = 1;
-    }
-    else if (key == GLFW_KEY_F && action == GLFW_PRESS)
-    {
-        //glShadeModel(GL_FLAT);
     }
     else if (key == GLFW_KEY_L && action == GLFW_PRESS)
     {
@@ -84,8 +62,6 @@ void keyboard(GLFWwindow* window, int key, int scancode, int action, int mods)
         else glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         toggleCursor = !toggleCursor;
     }
-
-
 }
 
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)

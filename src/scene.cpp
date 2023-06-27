@@ -24,15 +24,15 @@ void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, si
 {
     for (auto &portal : portals)
     {
-        // Disable color and depth drawing
+        // Disable color and depth writing
         glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
         glDepthMask(GL_FALSE);
 
         // Disable depth test
         glDisable(GL_DEPTH_TEST);
 
-        // Enable stencil test, to prevent drawing outside
-        // region of current portal depth
+        // Enable stencil test, not to draw
+        // outside of current portal depth
         glEnable(GL_STENCIL_TEST);
 
         // Fail stencil test when inside of outer portal
@@ -50,7 +50,7 @@ void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, si
         portal->draw(viewMat, projMat);
 
 
-        // Calculate view matrix as if the player was already teleported
+        // Calculate viewing matrix of virtual camera
         glm::mat4 destinationView =
                                viewMat * portal->modelMat
                              * glm::rotate(glm::mat4(1.0f), glm::radians(180.f), glm::vec3(0.0f, 1.0f, 0.0f) * portal->orientation)
@@ -158,5 +158,4 @@ void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, si
 
     // Draw scene objects normally, only at recursionLevel
     drawOtherObjects(viewMat, projMat);
-
 }
