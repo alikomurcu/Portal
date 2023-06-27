@@ -24,7 +24,7 @@ public:
     glm::vec3 normal = glm::vec3(0, 0, 1);
     Portal* destination;
     Portal();
-    glm::mat4 const clippedProjMat(glm::mat4 const &destView, glm::mat4 const &projMat) const;
+    glm::mat4 const obliqueClippingOnProjMat(glm::mat4 const &destView, glm::mat4 const &projMat) const;
     void setDestination(Portal *dest);
     Portal* getDestination() const;
     void draw(glm::mat4 viewMat, glm::mat4 projMat);

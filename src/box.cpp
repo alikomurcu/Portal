@@ -14,6 +14,7 @@ BoxModel::BoxModel() : shader(BoxShader("shaders/box_vert.glsl", "shaders/box_fr
     
 void BoxModel::draw(glm::mat4 viewingMat, glm::mat4 projectionMat)
 {
+    glDisable(GL_CULL_FACE);
     shader.use();
     shader.setMat4("modelingMatrix", modelMat);
 	shader.setMat4("viewingMatrix", viewingMat);
@@ -25,7 +26,8 @@ void BoxModel::draw(glm::mat4 viewingMat, glm::mat4 projectionMat)
 	glActiveTexture(GL_TEXTURE0 + 10);
 	glBindTexture(GL_TEXTURE_2D, texture);
 
-    glDrawArrays(GL_POINTS, 0, 8); 
+    glDrawArrays(GL_POINTS, 0, 8);
+    glEnable(GL_CULL_FACE);
 }
 
 GLuint BoxShader::createGS(const std::string& shaderName)
