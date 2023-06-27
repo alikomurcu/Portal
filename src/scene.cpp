@@ -4,7 +4,7 @@ Scene::Scene()
 {
 };
 
-void Scene::drawNonPortals(glm::mat4 viewMat, glm::mat4 projMat)
+void Scene::drawOtherObjects(glm::mat4 viewMat, glm::mat4 projMat)
 {
     for (auto &model : models)
     {
@@ -51,7 +51,8 @@ void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, si
 
 
         // Calculate view matrix as if the player was already teleported
-        glm::mat4 destView = viewMat * portal->modelMat
+        glm::mat4 destinationView =
+                               viewMat * portal->modelMat
                              * glm::rotate(glm::mat4(1.0f), glm::radians(180.f), glm::vec3(0.0f, 1.0f, 0.0f) * portal->orientation)
                              * glm::inverse(portal->destination->modelMat);
 
@@ -81,16 +82,16 @@ void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, si
             // which is where we just drew the new portal
             glStencilFunc(GL_EQUAL, recursionLevel + 1, 0xFF);
 
-            // Draw scene objects with destView, limited to stencil buffer
+            // Draw scene objects with destinationView, limited to stencil buffer
             // use an edited projection matrix to set the near plane to the portal plane
-            drawNonPortals(destView, portal->clippedProjMat(destView, projMat));
-            //drawNonPortals(destView, projMat);
+            drawOtherObjects(destinationView, portal->obliqueClippingOnProjMat(destinationView, projMat));
+            //drawOtherObjects(destinationView, projMat);
         }
         else
         {
             // Recursion case
             // Pass our new view matrix and the clipped projection matrix (see above)
-            recursiveDraw(destView, portal->clippedProjMat(destView, projMat), maxRecursionLevel, recursionLevel + 1);
+            recursiveDraw(destinationView, portal->obliqueClippingOnProjMat(destinationView, projMat), maxRecursionLevel, recursionLevel + 1);
         }
 
         // Disable color and depth drawing
@@ -156,6 +157,6 @@ void Scene::recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, si
     glEnable(GL_DEPTH_TEST);
 
     // Draw scene objects normally, only at recursionLevel
-    drawNonPortals(viewMat, projMat);
+    drawOtherObjects(viewMat, projMat);
 
 }

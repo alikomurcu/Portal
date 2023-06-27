@@ -17,7 +17,7 @@ public:
     Skybox *skybox;
     BoxModel *box;
     void recursiveDraw(glm::mat4 const &viewMat, glm::mat4 const &projMat, size_t maxRecursionLevel, size_t recursionLevel);
-    void drawNonPortals(glm::mat4 viewMat, glm::mat4 projMat);
+    void drawOtherObjects(glm::mat4 viewMat, glm::mat4 projMat);
 };
 
 #endif // SCENE_HPP

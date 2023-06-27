@@ -46,18 +46,13 @@ class Model
         GLuint vertexBuffer;
         GLuint indexBuffer;
         GLuint faceCount;
-
         GLuint texture;
-
         inline static std::vector<Vertex> gVertices;
         inline static std::vector<Texture> gTextures;
         inline static std::vector<Normal> gNormals;
         inline static std::vector<Face> gFaces;
         inline static int texture_ctr = 0;
-
         bool ParseObj(const std::string& fileName);
-
-
     public:
         Shader* shader;
         int texture_num;
