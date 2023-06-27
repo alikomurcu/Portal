@@ -30,7 +30,7 @@ void init()
     scene->models[2].attach_texture("assets/textures/ground.jpg");
     scene->models[3].attach_texture("assets/textures/ground.jpg");
 
-    scene->models[0].set_position(glm::vec3(0.0f, 1.0f, 0.5f));
+    scene->models[0].set_position(glm::vec3(0.0f, 1.0f, -3.0f));
 
     Skybox *skybox = new Skybox();
     skybox->initShader("shaders/skyboxvs.glsl", "shaders/skyboxfs.glsl");
@@ -39,6 +39,7 @@ void init()
     scene->skybox = skybox;
 
     BoxModel *box = new BoxModel();
+    box->attach_texture("assets/textures/crate.jpg");
     scene->box = box;
 
     Shader *portalShader = new Shader("shaders/portal_vert.glsl", "shaders/portal_frag.glsl");
@@ -118,6 +119,29 @@ void collisionHandler (Portal *portal)
         
         //mainCamera->Yaw += glm::degrees(angle);
     }
+
+    collision = glm::dot((scene->box->position - portal->position), (portal->normal));
+    temp1 = glm::vec2(scene->box->position.x, scene->box->position.z);
+    temp2 = glm::vec2(portal->position.x, portal->position.z);
+    dist = glm::distance(temp1, temp2);
+
+    if (dist < PORTAL_WIDTH / 2.0 && abs(collision) < 0.01)
+    {
+        std::cout << "Teleported!!!" << std::endl;
+        scene->box->position.y -= 0.5;
+        scene->box->position += portal->destination->position - portal->position;
+        scene->box->position.y += 0.5;
+        //scene->box->position.x += 0.25 * portal->destination->normal.x;
+        //scene->box->position.z += 0.25 * portal->destination->normal.z;
+
+        //mainCamera->Yaw += glm::degrees(portal->destination->angle) - glm::degrees(portal->angle);
+
+        float d_product = glm::dot(-portal->normal, portal->destination->normal);
+        float dist_mult = glm::length(-portal->normal) * glm::length(portal->destination->normal);
+        float angle = acos(d_product / dist_mult);
+        
+        //mainCamera->Yaw += glm::degrees(angle);
+    }
 }
 
 void render(GLFWwindow* window)
@@ -134,8 +158,8 @@ void render(GLFWwindow* window)
         collisionHandler(portal1);
         collisionHandler(portal2);
 
-        scene->models[0].position.x += 0.01; // Box without geometry shader
-        scene->models[0].set_position(scene->models[0].position);
+        //scene->models[0].position.x += 0.01; // Box without geometry shader
+        //scene->models[0].set_position(scene->models[0].position);
 
         scene->box->position.x += 0.01; // Box with geometry shader
         scene->box->set_position(scene->box->position);

@@ -20,6 +20,11 @@ void BoxModel::draw(glm::mat4 viewingMat, glm::mat4 projectionMat)
 	shader.setMat4("projectionMatrix", projectionMat);
 
     glBindVertexArray(boxVAO);
+
+    shader.setInt("tex", 10);
+	glActiveTexture(GL_TEXTURE0 + 10);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
     glDrawArrays(GL_POINTS, 0, 8); 
 }
 
@@ -80,4 +85,24 @@ void BoxModel::set_position(glm::vec3 position) {
 void BoxModel::update_modelMat()
 {
     modelMat = glm::translate(glm::mat4(1.0f), position);
+}
+
+void BoxModel::attach_texture (const std::string &fileName)
+{
+	glGenTextures(1, &texture);
+	glActiveTexture(GL_TEXTURE0 + 10); //Hardcoded to use texture 10
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	int width, height, nrChannels;
+	unsigned char *data;
+
+	data = stbi_load(fileName.c_str(), &width, &height, &nrChannels, 0);
+	
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
 }
